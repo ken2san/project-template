@@ -145,15 +145,23 @@ if [[ "$1" != "--apply" && ! -d ".git" ]]; then
   echo "  ✓ git init + initial commit done"
 fi
 
-echo "\n--- Checking for remaining placeholders (fill in directly) ---"
-REMAINING=$(grep -rn '{{' . --include='*.md' --exclude-dir=node_modules 2>/dev/null || true)
+echo "\n--- Remaining placeholders for Step 2 (AI prompt will fill these) ---"
+# Exclude: README.md (placeholder table docs) and prompts/ (instructional {{...}} references)
+REMAINING=$(grep -rn '{{' . --include='*.md' \
+  --exclude-dir=node_modules \
+  --exclude-dir=prompts \
+  --exclude='README.md' \
+  2>/dev/null || true)
 if [[ -z "$REMAINING" ]]; then
   echo "  ✓ No placeholders remaining."
 else
   echo "$REMAINING"
+  echo "\n  → Run 'Copilot: Run Prompt > init' in VS Code to fill these with AI-generated content."
 fi
 
-echo "\n=== Done. Edit remaining placeholders above directly in each file. ==="
+echo "\n=== Done. ==="
 if [[ "$1" == "--new" ]]; then
   echo "Project created at: $(pwd)"
+  echo "\nNext: open this folder in VS Code, then run:"
+  echo "  > Copilot: Run Prompt > init"
 fi

@@ -43,12 +43,14 @@ When code, a test, or a build fails, enter the self-healing loop:
 5. **No masking** — do not suppress errors, skip assertions, mock external calls, or modify tests to match broken code unless that is explicitly the task.
 
 ### Escalate when (stop, report, wait for instruction):
+
 - 3 attempts exhausted with no progress
 - The fix requires adding a dependency, changing a DB schema, or altering the architecture
 - The error is ambiguous or the requirement is contradictory
 - The fix would touch security-sensitive code (auth, credentials, encryption, access control)
 
 ### Escalation report format:
+
 ```
 Blocked after N attempt(s).
 Error: <exact error message>

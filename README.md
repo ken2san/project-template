@@ -34,39 +34,38 @@ project-template/
 
 ## Setup (new project)
 
-**Option A — Bootstrap from scratch (recommended):**
+**Two-step process: bash handles structure, AI handles content.**
+
+### Step 1 — Bootstrap (bash)
+
+**Option A — New project (recommended):**
 
 ```
 cd ~/Library/CloudStorage/Dropbox/Sandbox/project-template
-
-# Create in Dropbox/sandbox/ (default):
 ./init-project.sh --new
-
-# Create anywhere (e.g. Desktop):
-./init-project.sh --new ~/Desktop
 ```
 
-Prompts for project folder name, then copies the template and initializes it automatically.
+Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. Copies template, replaces basic placeholders, runs `git init`.
 
-**Option B — Manual copy:**
-
-1. Copy this folder to `Dropbox/Sandbox/project-{name}/`
-2. Run the init script:
-
-   ```
-   cd ~/Library/CloudStorage/Dropbox/Sandbox/project-{name}
-   ./init-project.sh
-   ```
-
-   Prompts: **Project type (webapp/game/api) / Project name / One-line description / Tech stack / First phase to block**
-
-**Option C — Apply to existing project:**
+**Option B — Apply to existing project:**
 
 ```
 ./init-project.sh --apply ~/path/to/existing-project
 ```
 
-Copies only agent files (AGENTS.md, .github/agents/, .vscode/settings.json, etc.) into an existing project. Skips files that already exist. Then runs placeholder replacement.
+Copies only agent files into an existing project. Skips files that already exist.
+
+### Step 2 — AI content generation (Copilot Agent)
+
+Open the new project in VS Code, then run:
+
+```
+> Copilot: Run Prompt > init
+```
+
+The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Roadmap.md`, `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
+
+> The prompt file is at `.github/prompts/init.prompt.md`.
 
 3. Fill in remaining placeholders:
    ```

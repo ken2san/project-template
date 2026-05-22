@@ -1,7 +1,7 @@
 ---
-mode: agent
+agent: true
 description: Fill all remaining template placeholders with AI-generated project content
-tools: [editFiles]
+tools: [edit/editFiles]
 ---
 
 You are an expert project architect finishing the initialization of a new software project.

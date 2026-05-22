@@ -1,5 +1,5 @@
 ---
-agent: true
+agent: agent
 description: Fill all remaining template placeholders with AI-generated project content
 tools: [edit/editFiles]
 ---

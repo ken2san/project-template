@@ -1,5 +1,6 @@
 ---
 description: Infrastructure agent for {{PROJECT_NAME}}
+applyTo: "**"
 ---
 
 # Infra Agent

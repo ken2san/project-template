@@ -1,5 +1,6 @@
 ---
 description: Backend agent for {{PROJECT_NAME}}
+applyTo: "**"
 ---
 
 # Backend Agent

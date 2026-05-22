@@ -42,16 +42,11 @@ if [[ "$1" == "--apply" ]]; then
   #                        Use for files that accumulate project-specific content.
   #                        Once present in the workspace, they are owned by the project.
   #
-  # *.agent.md role files (global, frontend, backend, infra) are currently in
-  # SKIP_IF_EXISTS because they contain placeholder content that projects may have
-  # customised. Ideal design would move them to FORCE_FILES and reserve
-  # global.custom.agent.md as the sole project-owned customisation point.
-  # Changing this requires ensuring projects have migrated custom edits out first.
-
   # Files always overwritten (pure template rules, no project-specific content)
   FORCE_FILES=(
     "AGENTS.md"
     ".vscode/settings.json"
+    ".github/instructions/global.instructions.md"
   )
 
   # Files copied only if not present (contain project-specific or placeholder content)
@@ -59,14 +54,13 @@ if [[ "$1" == "--apply" ]]; then
     "Decisions.md"
     "HANDOFF.md"
     ".github/copilot-instructions.md"
-    ".github/agents/global.agent.md"
-    ".github/agents/frontend.agent.md"
-    ".github/agents/backend.agent.md"
-    ".github/agents/infra.agent.md"
+    ".github/instructions/frontend.instructions.md"
+    ".github/instructions/backend.instructions.md"
+    ".github/instructions/infra.instructions.md"
   )
 
-  # global.custom.agent.md: project-owned — only create if absent, never overwrite
-  SKIP_IF_EXISTS_FILES+=(".github/agents/global.custom.agent.md")
+  # global.custom.instructions.md: project-owned — only create if absent, never overwrite
+  SKIP_IF_EXISTS_FILES+=(".github/instructions/global.custom.instructions.md")
 
   for f in "${FORCE_FILES[@]}"; do
     dest="$TARGET/$f"
@@ -128,12 +122,12 @@ if [[ "$1" != "--apply" ]]; then
 
   case "$PROJECT_TYPE" in
     2)
-      rm -f .github/agents/backend.agent.md
-      echo "  removed: backend.agent.md (game project)"
+      rm -f .github/instructions/backend.instructions.md
+      echo "  removed: backend.instructions.md (game project)"
       ;;
     3)
-      rm -f .github/agents/frontend.agent.md
-      echo "  removed: frontend.agent.md (api project)"
+      rm -f .github/instructions/frontend.instructions.md
+      echo "  removed: frontend.instructions.md (api project)"
       ;;
   esac
 fi

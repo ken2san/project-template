@@ -1,5 +1,6 @@
 ---
 description: Frontend development agent for {{PROJECT_NAME}} ({{STACK}})
+applyTo: "**"
 ---
 
 # Frontend Agent

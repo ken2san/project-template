@@ -1,5 +1,6 @@
 ---
 description: Global agent rules for {{PROJECT_NAME}} — applies to all roles
+applyTo: "**"
 ---
 
 # Global Agent
@@ -10,7 +11,7 @@ _Last updated: {{DATE}}_
 TEMPLATE-MANAGED FILE — read this before editing (applies to AI agents too):
 
 This file is overwritten by `init-project.sh --apply` on every template upgrade.
-Do NOT add project-specific content here — use global.custom.agent.md instead.
+Do NOT add project-specific content here — use global.custom.instructions.md instead.
 
 Purpose of this file:
 - Provide project-wide operational context sourced from project-template.

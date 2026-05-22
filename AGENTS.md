@@ -88,5 +88,5 @@ Before marking any task complete:
 ## Structure
 
 - Project context and workspace rules: `.github/copilot-instructions.md`
-- Role-specific agent rules: `.github/agents/*.agent.md`
-- Global project-specific overrides: `.github/agents/global.agent.md`
+- Role-specific instructions: `.github/instructions/*.instructions.md`
+- Project-specific overrides (safe from template upgrades): `.github/instructions/global.custom.instructions.md`

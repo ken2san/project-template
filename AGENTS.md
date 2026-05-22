@@ -1,6 +1,4 @@
-# AGENTS.md — {{PROJECT_NAME}}
-
-_Last updated: {{DATE}}_
+# AGENTS.md
 
 ## TL;DR — Critical Rules
 

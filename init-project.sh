@@ -31,12 +31,16 @@ if [[ "$1" == "--apply" ]]; then
 
   echo "Applying agent files to: $TARGET\n"
 
-  # Files to copy (agent/AI config only — no README, Roadmap, Protocol)
-  AGENT_FILES=(
+  # Files always overwritten (pure template rules, no project-specific content)
+  FORCE_FILES=(
     "AGENTS.md"
+    ".vscode/settings.json"
+  )
+
+  # Files copied only if not present (contain project-specific content)
+  SKIP_IF_EXISTS_FILES=(
     "Decisions.md"
     "HANDOFF.md"
-    ".vscode/settings.json"
     ".github/copilot-instructions.md"
     ".github/agents/global.agent.md"
     ".github/agents/frontend.agent.md"
@@ -44,7 +48,18 @@ if [[ "$1" == "--apply" ]]; then
     ".github/agents/infra.agent.md"
   )
 
-  for f in "${AGENT_FILES[@]}"; do
+  # global.custom.agent.md: only create if not present — it belongs to the project
+  SKIP_IF_EXISTS_FILES+=(".github/agents/global.custom.agent.md")
+
+  for f in "${FORCE_FILES[@]}"; do
+    dest="$TARGET/$f"
+    destdir="$(dirname "$dest")"
+    mkdir -p "$destdir"
+    cp "$TEMPLATE_DIR/$f" "$dest"
+    echo "  updated: $f"
+  done
+
+  for f in "${SKIP_IF_EXISTS_FILES[@]}"; do
     dest="$TARGET/$f"
     destdir="$(dirname "$dest")"
     mkdir -p "$destdir"

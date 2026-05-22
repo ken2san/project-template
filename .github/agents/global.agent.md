@@ -22,7 +22,3 @@ Usage (developer note, not for AI):
 | Build | `{{BUILD_COMMAND}}` |
 
 The self-healing loop must use these commands for verification steps. If a command is not yet defined, state that explicitly rather than skipping verification.
-
-## Project-Specific Overrides
-
-_None yet — add exceptions here as the project evolves._

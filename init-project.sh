@@ -62,6 +62,10 @@ if [[ "$1" == "--apply" ]]; then
   # global.custom.instructions.md: project-owned — only create if absent, never overwrite
   SKIP_IF_EXISTS_FILES+=(".github/instructions/global.custom.instructions.md")
 
+  # prompts: utilities — copy if absent, allow project to customize
+  SKIP_IF_EXISTS_FILES+=(".github/prompts/init.prompt.md")
+  SKIP_IF_EXISTS_FILES+=(".github/prompts/apply.prompt.md")
+
   for f in "${FORCE_FILES[@]}"; do
     dest="$TARGET/$f"
     destdir="$(dirname "$dest")"
@@ -182,7 +186,11 @@ if [[ -z "$REMAINING" ]]; then
   echo "  ✓ No placeholders remaining."
 else
   echo "$REMAINING"
-  echo "\n  → Run 'Copilot: Run Prompt > init' in VS Code to fill these with AI-generated content."
+  if [[ "$1" == "--apply" ]]; then
+    echo "\n  → Run 'Copilot: Run Prompt > apply' in VS Code to fill these with AI-generated content."
+  else
+    echo "\n  → Run 'Copilot: Run Prompt > init' in VS Code to fill these with AI-generated content."
+  fi
 fi
 
 echo "\n=== Done. ==="

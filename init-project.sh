@@ -31,13 +31,30 @@ if [[ "$1" == "--apply" ]]; then
 
   echo "Applying agent files to: $TARGET\n"
 
+  # DESIGN NOTE (for maintainers and AI agents):
+  # Two categories of files exist for --apply:
+  #
+  #   FORCE_FILES        — overwritten on every --apply run.
+  #                        Use for pure-template content with no project-specific data.
+  #                        Template improvements are automatically propagated.
+  #
+  #   SKIP_IF_EXISTS     — copied only if absent; never overwritten.
+  #                        Use for files that accumulate project-specific content.
+  #                        Once present in the workspace, they are owned by the project.
+  #
+  # *.agent.md role files (global, frontend, backend, infra) are currently in
+  # SKIP_IF_EXISTS because they contain placeholder content that projects may have
+  # customised. Ideal design would move them to FORCE_FILES and reserve
+  # global.custom.agent.md as the sole project-owned customisation point.
+  # Changing this requires ensuring projects have migrated custom edits out first.
+
   # Files always overwritten (pure template rules, no project-specific content)
   FORCE_FILES=(
     "AGENTS.md"
     ".vscode/settings.json"
   )
 
-  # Files copied only if not present (contain project-specific content)
+  # Files copied only if not present (contain project-specific or placeholder content)
   SKIP_IF_EXISTS_FILES=(
     "Decisions.md"
     "HANDOFF.md"
@@ -48,7 +65,7 @@ if [[ "$1" == "--apply" ]]; then
     ".github/agents/infra.agent.md"
   )
 
-  # global.custom.agent.md: only create if not present — it belongs to the project
+  # global.custom.agent.md: project-owned — only create if absent, never overwrite
   SKIP_IF_EXISTS_FILES+=(".github/agents/global.custom.agent.md")
 
   for f in "${FORCE_FILES[@]}"; do

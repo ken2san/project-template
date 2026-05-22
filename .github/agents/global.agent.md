@@ -7,10 +7,15 @@ description: Global agent rules for {{PROJECT_NAME}} — applies to all roles
 _Last updated: {{DATE}}_
 
 <!--
-Usage (developer note, not for AI):
-- Rules in AGENTS.md are universal and take precedence in all environments.
-- Add only project-specific exceptions, clarifications, or operational examples here.
-- Do not duplicate or restate AGENTS.md rules.
+TEMPLATE-MANAGED FILE — read this before editing (applies to AI agents too):
+
+This file is overwritten by `init-project.sh --apply` on every template upgrade.
+Do NOT add project-specific content here — use global.custom.agent.md instead.
+
+Purpose of this file:
+- Provide project-wide operational context sourced from project-template.
+- Define verification commands (filled in during project init).
+- Rules in AGENTS.md always take precedence; do not duplicate them here.
 -->
 
 ## Verification Commands

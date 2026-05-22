@@ -2,6 +2,8 @@
 
 New project bootstrap template for Copilot Agent projects.
 
+> **Template version:** see `VERSION` file. Check current version with `./init-project.sh --version`.
+
 ---
 
 ## File Structure
@@ -16,6 +18,7 @@ project-template/
 ├── HANDOFF.md                         ← AI session handoff template
 ├── .gitignore
 ├── init-project.sh                    ← Bootstrap script (--new flag supported)
+├── VERSION                            ← Template semantic version (e.g. 1.0.0)
 ├── .vscode/
 │   └── settings.json                  ← Copilot instruction file references
 └── .github/
@@ -86,3 +89,38 @@ Copies only agent files (AGENTS.md, .github/agents/, .vscode/settings.json, etc.
 | `{{DECISION_*}}`                                           | manual | Decisions.md                               |
 | `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)           |
 | `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                 |
+
+---
+
+## Template Versioning
+
+This template is versioned with Git and semantic versioning (`VERSION` file).
+
+**Check current version:**
+
+```
+./init-project.sh --version
+```
+
+**Upgrade the template** (add new features, fix agent rules, etc.):
+
+```bash
+# 1. Edit files in this template directory
+# 2. Commit the change
+git add .
+git commit -m "feat: add mobile agent template"
+
+# 3. Bump VERSION and tag
+echo "1.1.0" > VERSION
+git add VERSION && git commit -m "chore: bump version to 1.1.0"
+git tag v1.1.0
+```
+
+**Each generated project tracks its origin** via `.template-version` (written by `init-project.sh`).  
+To see which version a project was bootstrapped from:
+
+```
+cat .template-version
+```
+
+> Note: `.template-version` in generated projects is informational only — there is no automatic upgrade mechanism. To pull in new agent rules, use `--apply` mode.

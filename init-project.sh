@@ -111,6 +111,10 @@ read "PROJECT_NAME?Project name (e.g. MyApp): "
 read "PROJECT_DESCRIPTION?One-line description: "
 read "STACK?Tech stack (e.g. React 18, Vite, TailwindCSS): "
 read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
+read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
+read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "
+read "TEST_COMMAND?Test command (e.g. npm test): "
+read "BUILD_COMMAND?Build command (e.g. npm run build): "
 
 DATE=$(date +%Y-%m-%d)
 
@@ -124,6 +128,10 @@ find . \( -name "*.md" -o -name "settings.json" \) \
     -e "s|{{PROJECT_DESCRIPTION}}|${PROJECT_DESCRIPTION}|g" \
     -e "s|{{STACK}}|${STACK}|g" \
     -e "s|{{PHASE_MAX_PLUS_ONE}}|${PHASE_MAX_PLUS_ONE}|g" \
+    -e "s|{{DEV_COMMAND}}|${DEV_COMMAND}|g" \
+    -e "s|{{DEV_URL}}|${DEV_URL}|g" \
+    -e "s|{{TEST_COMMAND}}|${TEST_COMMAND}|g" \
+    -e "s|{{BUILD_COMMAND}}|${BUILD_COMMAND}|g" \
     "$file"
   echo "  updated: $file"
 done

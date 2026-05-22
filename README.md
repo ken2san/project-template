@@ -73,22 +73,24 @@ Copies only agent files (AGENTS.md, .github/agents/, .vscode/settings.json, etc.
    grep -rn '{{' . --include='*.md'
    ```
 
-| Placeholder                                                | Set by | Files                                      |
-| ---------------------------------------------------------- | ------ | ------------------------------------------ |
-| `{{PROJECT_NAME}}`                                         | script | all                                        |
-| `{{DATE}}`                                                 | script | all                                        |
-| `{{PROJECT_DESCRIPTION}}`                                  | script | copilot-instructions.md, HANDOFF.md        |
+| Placeholder                                                | Set by | Files                                                  |
+| ---------------------------------------------------------- | ------ | ------------------------------------------------------ |
+| `{{PROJECT_NAME}}`                                         | script | all                                                    |
+| `{{DATE}}`                                                 | script | all                                                    |
+| `{{PROJECT_DESCRIPTION}}`                                  | script | copilot-instructions.md, HANDOFF.md                    |
 | `{{STACK}}`                                                | script | copilot-instructions.md, frontend.agent.md, HANDOFF.md |
-| `{{PHASE_MAX_PLUS_ONE}}`                                   | script | AGENTS.md, copilot-instructions.md, HANDOFF.md |
-| `{{ENTRY_POINT}}` `{{STATE_LOCATION}}` `{{STATE_LIBRARY}}` | manual | copilot-instructions.md, frontend.agent.md |
-| `{{CODE_RULE_*}}`                                          | manual | copilot-instructions.md                    |
-| `{{PHASE_*}}` `{{CURRENT_PHASE}}`                          | manual | Roadmap.md, HANDOFF.md                     |
-| `{{BACKEND_*}}` `{{MOCK_DATA_LOCATION}}`                   | manual | backend.agent.md                           |
-| `{{INFRA_*}}`                                              | manual | infra.agent.md                             |
-| `{{PROTOCOL_OVERVIEW}}` `{{PRINCIPLE_*}}` etc.             | manual | Protocol.md                                |
-| `{{DECISION_*}}`                                           | manual | Decisions.md                               |
-| `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)           |
-| `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                 |
+| `{{PHASE_MAX_PLUS_ONE}}`                                   | script | AGENTS.md, copilot-instructions.md, HANDOFF.md         |
+| `{{ENTRY_POINT}}` `{{STATE_LOCATION}}` `{{STATE_LIBRARY}}` | manual | copilot-instructions.md, frontend.agent.md             |
+| `{{CODE_RULE_*}}`                                          | manual | copilot-instructions.md                                |
+| `{{PHASE_*}}` `{{CURRENT_PHASE}}`                          | manual | Roadmap.md, HANDOFF.md                                 |
+| `{{BACKEND_*}}` `{{MOCK_DATA_LOCATION}}`                   | manual | backend.agent.md                                       |
+| `{{INFRA_*}}`                                              | manual | infra.agent.md                                         |
+| `{{PROTOCOL_OVERVIEW}}` `{{PRINCIPLE_*}}` etc.             | manual | Protocol.md                                            |
+| `{{DECISION_*}}`                                           | manual | Decisions.md                                           |
+| `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)                       |
+| `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                             |
+| `{{DEV_COMMAND}}` `{{DEV_URL}}`                            | manual | global.agent.md                                        |
+| `{{TEST_COMMAND}}` `{{BUILD_COMMAND}}`                     | manual | global.agent.md                                        |
 
 ---
 
@@ -116,7 +118,7 @@ git add VERSION && git commit -m "chore: bump version to 1.1.0"
 git tag v1.1.0
 ```
 
-**Each generated project tracks its origin** via `.template-version` (written by `init-project.sh`).  
+**Each generated project tracks its origin** via `.template-version` (written by `init-project.sh`).
 To see which version a project was bootstrapped from:
 
 ```

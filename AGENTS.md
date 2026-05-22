@@ -2,6 +2,16 @@
 
 _Last updated: {{DATE}}_
 
+## TL;DR — Critical Rules
+
+- **Self-healing limit:** Max 3 fix attempts on any error, then stop and escalate with a structured report.
+- **Verify before done:** Run tests and build before marking any task complete. Never commit unverified code.
+- **Stay in scope:** Only touch files directly related to the current task. Do not refactor unrelated code.
+- **No masking:** Never suppress errors, skip tests, or modify assertions to force a green result.
+- **Escalate clearly:** When blocked, report the exact error, what was tried, and what human decision is needed.
+
+---
+
 ## Intellectual Honesty Policy
 
 - Agreement must be earned, not offered.

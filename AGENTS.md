@@ -40,6 +40,13 @@
 - All code, comments, and UI text must be in English.
 - Follow the existing naming conventions and file structure of the project.
 
+## Security Policy
+
+- Do not introduce vulnerabilities listed in the OWASP Top 10.
+- Never hardcode secrets, tokens, API keys, or credentials in source code.
+- Sanitize and validate all user inputs at system boundaries.
+- If a change touches auth, encryption, or access control, flag it explicitly before proceeding.
+
 ## Self-Healing Loop Policy
 
 When code, a test, or a build fails, enter the self-healing loop:

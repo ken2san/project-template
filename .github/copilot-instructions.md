@@ -22,11 +22,12 @@ Stack: {{STACK}}. Entry: `{{ENTRY_POINT}}`. State: {{STATE_LOCATION}}.
 
 ## Agent Files
 
-Role-specific rules are in `.github/agents/`:
-- `global.agent.md` — project-wide overrides to `AGENTS.md`
-- `frontend.agent.md` — UI/component rules
-- `backend.agent.md` — API/data rules
-- `infra.agent.md` — deployment/infrastructure rules
+Role-specific rules are in `.github/instructions/`:
+- `global.instructions.md` — template-managed global rules (overwritten by `--apply`)
+- `global.custom.instructions.md` — project-owned overrides (never overwritten)
+- `frontend.instructions.md` — UI/component rules
+- `backend.instructions.md` — API/data rules
+- `infra.instructions.md` — deployment/infrastructure rules
 
 ## Key Reference Files
 

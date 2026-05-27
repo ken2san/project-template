@@ -39,6 +39,8 @@
 - Do not add packages or dependencies without explicit user approval.
 - All code, comments, and UI text must be in English.
 - Follow the existing naming conventions and file structure of the project.
+- Never invent or assume API signatures, function names, or library methods.
+  Verify they exist in the codebase or documentation before using them.
 
 ## Security Policy
 
@@ -97,3 +99,5 @@ Before marking any task complete:
 - Project context and workspace rules: `.github/copilot-instructions.md`
 - Role-specific instructions: `.github/instructions/*.instructions.md`
 - Project-specific overrides (safe from template upgrades): `.github/instructions/global.custom.instructions.md`
+- Keep each instruction file under 200 lines — longer files reduce AI adherence.
+  Move details to scoped files or prompts rather than growing a single file.

@@ -23,11 +23,15 @@ project-template/
 │   └── settings.json                  ← Copilot instruction file references
 └── .github/
     ├── copilot-instructions.md
-    └── agents/
-        ├── global.agent.md            ← Project-specific overrides to AGENTS.md
-        ├── frontend.agent.md
-        ├── backend.agent.md
-        └── infra.agent.md
+    ├── instructions/
+    │   ├── global.instructions.md         ← Template-managed global rules (overwritten by --apply)
+    │   ├── global.custom.instructions.md  ← Project-owned overrides (never overwritten)
+    │   ├── frontend.instructions.md
+    │   ├── backend.instructions.md
+    │   └── infra.instructions.md
+    └── prompts/
+        ├── init.prompt.md             ← AI content generation prompt
+        └── apply.prompt.md            ← Placeholder fill prompt for --apply mode
 ```
 
 ---
@@ -41,7 +45,8 @@ project-template/
 **Option A — New project (recommended):**
 
 ```
-cd ~/Library/CloudStorage/Dropbox/Sandbox/project-template
+git clone https://github.com/YOUR_USERNAME/project-template
+cd project-template
 ./init-project.sh --new
 ```
 
@@ -72,24 +77,24 @@ The agent reads your project context, asks 2–3 targeted questions, then writes
    grep -rn '{{' . --include='*.md'
    ```
 
-| Placeholder                                                | Set by | Files                                                  |
-| ---------------------------------------------------------- | ------ | ------------------------------------------------------ |
-| `{{PROJECT_NAME}}`                                         | script | all                                                    |
-| `{{DATE}}`                                                 | script | all                                                    |
-| `{{PROJECT_DESCRIPTION}}`                                  | script | copilot-instructions.md, HANDOFF.md                    |
-| `{{STACK}}`                                                | script | copilot-instructions.md, frontend.agent.md, HANDOFF.md |
-| `{{PHASE_MAX_PLUS_ONE}}`                                   | script | AGENTS.md, copilot-instructions.md, HANDOFF.md         |
-| `{{ENTRY_POINT}}` `{{STATE_LOCATION}}` `{{STATE_LIBRARY}}` | manual | copilot-instructions.md, frontend.agent.md             |
-| `{{CODE_RULE_*}}`                                          | manual | copilot-instructions.md                                |
-| `{{PHASE_*}}` `{{CURRENT_PHASE}}`                          | manual | Roadmap.md, HANDOFF.md                                 |
-| `{{BACKEND_*}}` `{{MOCK_DATA_LOCATION}}`                   | manual | backend.agent.md                                       |
-| `{{INFRA_*}}`                                              | manual | infra.agent.md                                         |
-| `{{PROTOCOL_OVERVIEW}}` `{{PRINCIPLE_*}}` etc.             | manual | Protocol.md                                            |
-| `{{DECISION_*}}`                                           | manual | Decisions.md                                           |
-| `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)                       |
-| `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                             |
-| `{{DEV_COMMAND}}` `{{DEV_URL}}`                            | manual | global.agent.md                                        |
-| `{{TEST_COMMAND}}` `{{BUILD_COMMAND}}`                     | manual | global.agent.md                                        |
+| Placeholder                                                | Set by | Files                                                         |
+| ---------------------------------------------------------- | ------ | ------------------------------------------------------------- |
+| `{{PROJECT_NAME}}`                                         | script | all                                                           |
+| `{{DATE}}`                                                 | script | all                                                           |
+| `{{PROJECT_DESCRIPTION}}`                                  | script | copilot-instructions.md, HANDOFF.md                           |
+| `{{STACK}}`                                                | script | copilot-instructions.md, frontend.instructions.md, HANDOFF.md |
+| `{{PHASE_MAX_PLUS_ONE}}`                                   | script | AGENTS.md, copilot-instructions.md, HANDOFF.md                |
+| `{{ENTRY_POINT}}` `{{STATE_LOCATION}}` `{{STATE_LIBRARY}}` | manual | copilot-instructions.md, frontend.instructions.md             |
+| `{{CODE_RULE_*}}`                                          | manual | copilot-instructions.md                                       |
+| `{{PHASE_*}}` `{{CURRENT_PHASE}}`                          | manual | Roadmap.md, HANDOFF.md                                        |
+| `{{BACKEND_*}}` `{{MOCK_DATA_LOCATION}}`                   | manual | backend.instructions.md                                       |
+| `{{INFRA_*}}`                                              | manual | infra.instructions.md                                         |
+| `{{PROTOCOL_OVERVIEW}}` `{{PRINCIPLE_*}}` etc.             | manual | Protocol.md                                                   |
+| `{{DECISION_*}}`                                           | manual | Decisions.md                                                  |
+| `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)                              |
+| `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                                    |
+| `{{DEV_COMMAND}}` `{{DEV_URL}}`                            | manual | global.instructions.md                                        |
+| `{{TEST_COMMAND}}` `{{BUILD_COMMAND}}`                     | manual | global.instructions.md                                        |
 
 ---
 

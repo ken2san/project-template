@@ -27,6 +27,7 @@
 - Always consider the entire project and all relevant files, not just the currently open file.
 - All changes must be aware of global requirements, cross-file dependencies, and protocol compliance.
 - Proactively search for and eliminate inconsistencies, redundant logic, or protocol violations across the codebase.
+- **No speculative refactoring:** do not improve, clean up, or restructure code that is not directly required by the current task — even if it looks like it needs it.
 
 ## Optimization Policy
 
@@ -65,6 +66,8 @@ When code, a test, or a build fails, enter the self-healing loop:
 - The fix requires adding a dependency, changing a DB schema, or altering the architecture
 - The error is ambiguous or the requirement is contradictory
 - The fix would touch security-sensitive code (auth, credentials, encryption, access control)
+- A fix introduces new failures — revert the change immediately, count it as a failed attempt, and escalate if the limit is reached
+- The number of modified files has grown beyond what the original error directly implicated
 
 ### Escalation report format:
 

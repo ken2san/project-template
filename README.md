@@ -20,13 +20,14 @@ project-template/
 ├── init-project.sh                    ← Bootstrap script (--new flag supported)
 ├── VERSION                            ← Template semantic version (e.g. 1.0.0)
 ├── .vscode/
-│   └── settings.json                  ← Copilot instruction file references
+│   └── settings.json                  ← VS Code workspace settings
 └── .github/
     ├── copilot-instructions.md
     ├── PULL_REQUEST_TEMPLATE.md
     ├── ISSUE_TEMPLATE/
     │   ├── bug_report.md
-    │   └── feature_request.md
+    │   ├── feature_request.md
+    │   └── config.yml
     ├── instructions/
     │   ├── global.instructions.md         ← Template-managed global rules (overwritten by --apply)
     │   ├── global.custom.instructions.md  ← Project-owned overrides (never overwritten)
@@ -40,7 +41,7 @@ project-template/
 
 ---
 
-## Setup (new project)
+## Setup
 
 **Two-step process: bash handles structure, AI handles content.**
 
@@ -75,11 +76,6 @@ Open the new project in VS Code, then run:
 The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Roadmap.md`, `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
 
 > The prompt file is at `.github/prompts/init.prompt.md`.
-
-3. Fill in remaining placeholders:
-   ```
-   grep -rn '{{' . --include='*.md'
-   ```
 
 ## Supported project types
 
@@ -169,9 +165,9 @@ git add .
 git commit -m "feat: add mobile agent template"
 
 # 3. Bump VERSION and tag
-echo "1.1.0" > VERSION
-git add VERSION && git commit -m "chore: bump version to 1.1.0"
-git tag v1.1.0
+echo "<new-version>" > VERSION
+git add VERSION && git commit -m "chore: bump version to <new-version>"
+git tag v<new-version>
 ```
 
 **Each generated project tracks its origin** via `.template-version` (written by `init-project.sh`).

@@ -4,6 +4,6 @@
 
 ## Checklist
 
-- [ ] Changes are stack-agnostic and keep template behavior intact
+- [ ] Changes are consistent with project architecture and do not introduce scope creep
 - [ ] Verified according to AGENTS.md policy (no masking, limited self-healing, real checks)
-- [ ] Confirmed no unintended `{{...}}` placeholder changes in protected template files
+- [ ] Tested locally and build passes

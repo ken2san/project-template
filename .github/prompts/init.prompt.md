@@ -17,7 +17,7 @@ tailored to this project. Do not use generic filler like "Feature 1" or "Rule 1"
 ## Step 1 — Read the project context
 
 Read these files to understand the project:
-- `AGENTS.md` (project name, stack already filled in)
+- `AGENTS.md`
 - `.github/copilot-instructions.md`
 - `.github/instructions/global.instructions.md`
 
@@ -27,7 +27,7 @@ Read these files to understand the project:
 
 Run:
 ```
-grep -rn '{{' . --include='*.md' --exclude-dir=node_modules
+grep -rn '{{' . --include='*.md' --exclude-dir=node_modules --exclude-dir=prompts --exclude='README.md'
 ```
 
 ---
@@ -74,6 +74,10 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 
 ### `.github/instructions/backend.instructions.md` (if exists)
 - Fill in `{{BACKEND_STATUS}}`, `{{BACKEND_PHASE}}`, `{{BACKEND_STACK_*}}`, `{{MOCK_DATA_LOCATION}}`
+
+### `.github/instructions/infra.instructions.md` (if exists)
+- Fill in `{{INFRA_STACK}}` with the planned infrastructure (hosting, CI, CDN, etc.)
+- Fill in `{{INFRA_RULE_1}}` and `{{INFRA_RULE_2}}` with deployment constraints specific to this project
 
 ---
 

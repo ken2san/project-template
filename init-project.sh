@@ -79,6 +79,8 @@ if [[ "$1" == "--apply" ]]; then
   SKIP_IF_EXISTS_FILES=(
     "Decisions.md"
     "HANDOFF.md"
+    "Protocol.md"
+    "Roadmap.md"
     ".github/copilot-instructions.md"
     ".github/instructions/frontend.instructions.md"
     ".github/instructions/backend.instructions.md"
@@ -247,6 +249,7 @@ DATE=$(date +%Y-%m-%d)
 echo "\n--- Applying replacements to all .md and .json files ---"
 
 find . \( -name "*.md" -o -name "settings.json" \) \
+  -not -path '*/.git/*' \
   -not -path '*/node_modules/*' | while read file; do
   sed -i '' \
     -e "s|{{PROJECT_NAME}}|${PROJECT_NAME}|g" \
@@ -274,6 +277,7 @@ fi
 echo "\n--- Remaining placeholders for Step 2 (AI prompt will fill these) ---"
 # Exclude: README.md (placeholder table docs) and prompts/ (instructional {{...}} references)
 REMAINING=$(grep -rn '{{' . --include='*.md' \
+  --exclude-dir=.git \
   --exclude-dir=node_modules \
   --exclude-dir=prompts \
   --exclude='README.md' \

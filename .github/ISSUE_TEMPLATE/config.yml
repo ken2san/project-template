@@ -1,5 +1,6 @@
 blank_issues_enabled: false
-contact_links:
-  - name: General questions
-    url: https://github.com/ken2san/project-template#readme
-    about: See the README for setup instructions and usage guidance.
+# contact_links: update or remove this block after bootstrapping your project
+# contact_links:
+#   - name: General questions
+#     url: https://github.com/YOUR_USERNAME/YOUR_REPO#readme
+#     about: See the README for setup instructions.

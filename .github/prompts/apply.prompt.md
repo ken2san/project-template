@@ -23,6 +23,7 @@ Do **not** regenerate or overwrite files that already have real content.
 Read these files to understand the project before writing anything:
 - `AGENTS.md`
 - `.github/copilot-instructions.md`
+- `.github/instructions/global.instructions.md`
 - `.github/instructions/frontend.instructions.md` (if exists)
 - `.github/instructions/backend.instructions.md` (if exists)
 

@@ -40,5 +40,5 @@ Phase {{CURRENT_PHASE}} — see `Roadmap.md` for full scope and open items.
 
 - `AGENTS.md` — agent behavior rules
 - `Roadmap.md` — current phase and open items
-- `Protocol.md` — game/system rules
+- `Protocol.md` — project operating rules
 - `Decisions.md` — architectural decisions (do not reverse without instruction)

@@ -33,3 +33,4 @@ Role-specific rules are in `.github/instructions/`:
 
 - `Decisions.md` — architectural decisions; do not reverse without explicit instruction
 - `HANDOFF.md` — AI session handoff context; update before ending a session
+- `Protocol.md` — project operating rules; update if core workflow changes

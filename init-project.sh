@@ -16,11 +16,13 @@ prompt_required() {
   local first_prompt="$2"
   local value
 
-  read "${var_name}?${first_prompt}"
-  eval "value=\"\${${var_name}}\""
+  printf "%s" "$first_prompt"
+  IFS= read -r value
+  eval "${var_name}=\"\$value\""
   if [[ -z "${value//[[:space:]]/}" ]]; then
-    read "${var_name}?Value required, please try again: "
-    eval "value=\"\${${var_name}}\""
+    printf "Value required, please try again: "
+    IFS= read -r value
+    eval "${var_name}=\"\$value\""
     if [[ -z "${value//[[:space:]]/}" ]]; then
       echo "Error: required value cannot be empty." >&2
       exit 1

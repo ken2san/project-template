@@ -4,8 +4,7 @@
 # Usage (new project, sibling):      ./init-project.sh --new
 # Usage (new project, custom dir):   ./init-project.sh --new ~/Desktop
 # Usage (apply to existing project): ./init-project.sh --apply ~/path/to/project
-# Usage (check placeholders):        ./init-project.sh --check [dir]
-# Usage (print version):             ./init-project.sh --version
+# Usage (check for unresolved):      ./init-project.sh --check [dir]
 
 set -e
 
@@ -13,58 +12,35 @@ TEMPLATE_DIR="$(cd "$(dirname "$0")" && pwd)"
 SANDBOX_DIR="$(dirname "$TEMPLATE_DIR")"
 TEMPLATE_VERSION="$(cat "$TEMPLATE_DIR/VERSION" 2>/dev/null || echo 'unknown')"
 
-prompt_required() {
-  local var_name="$1"
-  local first_prompt="$2"
-  local value
-
-  printf "%s" "$first_prompt"
-  IFS= read -r value
-  eval "${var_name}=\"\$value\""
-  if [[ -z "${value//[[:space:]]/}" ]]; then
-    printf "Value required, please try again: "
-    IFS= read -r value
-    eval "${var_name}=\"\$value\""
-    if [[ -z "${value//[[:space:]]/}" ]]; then
-      echo "Error: required value cannot be empty." >&2
-      exit 1
-    fi
-  fi
-}
-
 # --- Version flag ---
 if [[ "$1" == "--version" ]]; then
   echo "project-template v${TEMPLATE_VERSION}"
   exit 0
 fi
 
-# --- Check mode: scan for unresolved placeholders ---
+# --- Check flag: read-only scan for unresolved {{...}} tokens ---
 if [[ "$1" == "--check" ]]; then
   CHECK_DIR="${2:-.}"
   CHECK_DIR="${CHECK_DIR/#\~/$HOME}"
-
   if [[ ! -d "$CHECK_DIR" ]]; then
     echo "Error: $CHECK_DIR does not exist." >&2
     exit 1
   fi
-
-  found=0
-  while IFS= read -r -d '' file; do
-    tokens=$(grep -oE '\{\{[^}]+\}\}' "$file" 2>/dev/null | sort -u || true)
-    if [[ -n "$tokens" ]]; then
-      while IFS= read -r token; do
-        [[ -z "$token" ]] && continue
-        echo "$file: $token"
-      done <<< "$tokens"
-      found=1
-    fi
-  done < <(find "$CHECK_DIR" -type f -not -path '*/.git/*' -print0)
-
-  if [[ $found -eq 0 ]]; then
+  FOUND=0
+  while IFS= read -r match; do
+    echo "$match"
+    FOUND=1
+  done < <(grep -rn '{{[^}]*}}' "$CHECK_DIR" \
+    --include='*.md' --include='*.sh' --include='*.json' \
+    --exclude-dir='.git' \
+    --exclude-dir='node_modules' \
+    2>/dev/null || true)
+  if [[ "$FOUND" -eq 0 ]]; then
     echo "No placeholder tokens found."
     exit 0
+  else
+    exit 1
   fi
-  exit 1
 fi
 
 echo "=== Copilot Agent Project Init (v${TEMPLATE_VERSION}) ===\n"
@@ -149,7 +125,14 @@ if [[ "$1" == "--new" ]]; then
   DEST_PARENT="${2:-$SANDBOX_DIR}"
   DEST_PARENT="${DEST_PARENT/#\~/$HOME}"
 
-  prompt_required "PROJECT_SLUG" "Project folder name (e.g. project-myapp): "
+  read "PROJECT_SLUG?Project folder name (e.g. project-myapp): "
+  if [[ -z "$PROJECT_SLUG" ]]; then
+    read "PROJECT_SLUG?Value required, please try again: "
+    if [[ -z "$PROJECT_SLUG" ]]; then
+      echo "Error: project folder name is required." >&2
+      exit 1
+    fi
+  fi
   DEST="$DEST_PARENT/$PROJECT_SLUG"
 
   if [[ -d "$DEST" ]]; then
@@ -187,25 +170,38 @@ if [[ "$1" != "--apply" ]]; then
 fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---
-if [[ "$1" == "--apply" ]]; then
-  read "PROJECT_NAME?Project name (e.g. MyApp): "
-  read "PROJECT_DESCRIPTION?One-line description: "
-  read "STACK?Tech stack (e.g. React 18, Vite, TailwindCSS): "
-  read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
-  read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
-  read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "
-  read "TEST_COMMAND?Test command (e.g. npm test): "
-  read "BUILD_COMMAND?Build command (e.g. npm run build): "
-else
-  prompt_required "PROJECT_NAME" "Project name (e.g. MyApp): "
-  prompt_required "PROJECT_DESCRIPTION" "One-line description: "
-  prompt_required "STACK" "Tech stack (e.g. React 18, Vite, TailwindCSS): "
-  prompt_required "PHASE_MAX_PLUS_ONE" "First phase to block (e.g. 3): "
-  prompt_required "DEV_COMMAND" "Dev server command (e.g. npm run dev): "
-  prompt_required "DEV_URL" "Dev server URL (e.g. http://localhost:3000): "
-  prompt_required "TEST_COMMAND" "Test command (e.g. npm test): "
-  prompt_required "BUILD_COMMAND" "Build command (e.g. npm run build): "
+read "PROJECT_NAME?Project name (e.g. MyApp): "
+if [[ -z "$PROJECT_NAME" ]]; then
+  read "PROJECT_NAME?Value required, please try again: "
+  if [[ -z "$PROJECT_NAME" ]]; then
+    echo "Error: project name is required." >&2
+    exit 1
+  fi
 fi
+
+read "PROJECT_DESCRIPTION?One-line description: "
+if [[ -z "$PROJECT_DESCRIPTION" ]]; then
+  read "PROJECT_DESCRIPTION?Value required, please try again: "
+  if [[ -z "$PROJECT_DESCRIPTION" ]]; then
+    echo "Error: project description is required." >&2
+    exit 1
+  fi
+fi
+
+read "STACK?Tech stack (e.g. React 18, Vite, TailwindCSS): "
+if [[ -z "$STACK" ]]; then
+  read "STACK?Value required, please try again: "
+  if [[ -z "$STACK" ]]; then
+    echo "Error: stack is required." >&2
+    exit 1
+  fi
+fi
+
+read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
+read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
+read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "
+read "TEST_COMMAND?Test command (e.g. npm test): "
+read "BUILD_COMMAND?Build command (e.g. npm run build): "
 
 DATE=$(date +%Y-%m-%d)
 

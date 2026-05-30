@@ -4,6 +4,7 @@
 # Usage (new project, sibling):      ./init-project.sh --new
 # Usage (new project, custom dir):   ./init-project.sh --new ~/Desktop
 # Usage (apply to existing project): ./init-project.sh --apply ~/path/to/project
+# Usage (check for unresolved):      ./init-project.sh --check [dir]
 
 set -e
 
@@ -15,6 +16,31 @@ TEMPLATE_VERSION="$(cat "$TEMPLATE_DIR/VERSION" 2>/dev/null || echo 'unknown')"
 if [[ "$1" == "--version" ]]; then
   echo "project-template v${TEMPLATE_VERSION}"
   exit 0
+fi
+
+# --- Check flag: read-only scan for unresolved {{...}} tokens ---
+if [[ "$1" == "--check" ]]; then
+  CHECK_DIR="${2:-.}"
+  CHECK_DIR="${CHECK_DIR/#\~/$HOME}"
+  if [[ ! -d "$CHECK_DIR" ]]; then
+    echo "Error: $CHECK_DIR does not exist." >&2
+    exit 1
+  fi
+  FOUND=0
+  while IFS= read -r match; do
+    echo "$match"
+    FOUND=1
+  done < <(grep -rn '{{[^}]*}}' "$CHECK_DIR" \
+    --include='*.md' --include='*.sh' --include='*.json' \
+    --exclude-dir='.git' \
+    --exclude-dir='node_modules' \
+    2>/dev/null || true)
+  if [[ "$FOUND" -eq 0 ]]; then
+    echo "No placeholder tokens found."
+    exit 0
+  else
+    exit 1
+  fi
 fi
 
 echo "=== Copilot Agent Project Init (v${TEMPLATE_VERSION}) ===\n"
@@ -100,6 +126,13 @@ if [[ "$1" == "--new" ]]; then
   DEST_PARENT="${DEST_PARENT/#\~/$HOME}"
 
   read "PROJECT_SLUG?Project folder name (e.g. project-myapp): "
+  if [[ -z "$PROJECT_SLUG" ]]; then
+    read "PROJECT_SLUG?Value required, please try again: "
+    if [[ -z "$PROJECT_SLUG" ]]; then
+      echo "Error: project folder name is required." >&2
+      exit 1
+    fi
+  fi
   DEST="$DEST_PARENT/$PROJECT_SLUG"
 
   if [[ -d "$DEST" ]]; then
@@ -138,8 +171,32 @@ fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---
 read "PROJECT_NAME?Project name (e.g. MyApp): "
+if [[ -z "$PROJECT_NAME" ]]; then
+  read "PROJECT_NAME?Value required, please try again: "
+  if [[ -z "$PROJECT_NAME" ]]; then
+    echo "Error: project name is required." >&2
+    exit 1
+  fi
+fi
+
 read "PROJECT_DESCRIPTION?One-line description: "
+if [[ -z "$PROJECT_DESCRIPTION" ]]; then
+  read "PROJECT_DESCRIPTION?Value required, please try again: "
+  if [[ -z "$PROJECT_DESCRIPTION" ]]; then
+    echo "Error: project description is required." >&2
+    exit 1
+  fi
+fi
+
 read "STACK?Tech stack (e.g. React 18, Vite, TailwindCSS): "
+if [[ -z "$STACK" ]]; then
+  read "STACK?Value required, please try again: "
+  if [[ -z "$STACK" ]]; then
+    echo "Error: stack is required." >&2
+    exit 1
+  fi
+fi
+
 read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
 read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
 read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "

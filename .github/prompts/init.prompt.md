@@ -85,7 +85,7 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 
 After writing all files, run:
 ```
-grep -rn '{{' . --include='*.md' --exclude-dir=node_modules
+grep -rn '{{' . --include='*.md' --exclude-dir=node_modules --exclude-dir=prompts --exclude='README.md'
 ```
 
 If any placeholders remain, either fill them in or explicitly flag them as "intentionally deferred" with a comment.

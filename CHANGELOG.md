@@ -6,6 +6,27 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.3.0] — 2026-05-30
+
+### Fixed
+- `init-project.sh`: `find` sed loop now excludes `.git/` (prevents corrupting git internals)
+- `init-project.sh`: remaining-placeholder `grep` now excludes `.git/` (matches `--check` behavior)
+- `init-project.sh`: `Protocol.md` and `Roadmap.md` added to `SKIP_IF_EXISTS_FILES` so `--apply` seeds them when absent
+- `init.prompt.md`: Step 5 verify `grep` now excludes `prompts/` and `README.md` (matches Step 2 and `apply.prompt.md`)
+- `init.prompt.md`: Step 1 removed false claim that `AGENTS.md` contains project name/stack
+- `init.prompt.md`: Step 2 `grep` now excludes `prompts/` and `README.md` (prevents AI filling docs examples)
+- `init.prompt.md`: Step 4 now includes `infra.instructions.md` fill guidance
+- `apply.prompt.md`: Step 1 now reads `global.instructions.md` for consistency with `init.prompt.md`
+- `HANDOFF.md`: "game/system rules" → "project operating rules" (template is stack-agnostic)
+- `copilot-instructions.md`: `Protocol.md` added to Key Reference Files
+- `PULL_REQUEST_TEMPLATE.md`: replaced template-repo-specific checklist item with generic one
+- `config.yml`: hardcoded `ken2san` contact URL replaced with commented-out placeholder
+- `README.md`: `config.yml` added to file structure tree
+- `README.md`: `settings.json` description corrected (`{}` not "Copilot instruction file references")
+- `README.md`: dangling "3. Fill in remaining placeholders" step removed
+- `README.md`: Option B (`--apply`) moved to its own section; Step 2 now correctly references `apply.prompt.md`
+- `README.md`: version upgrade example generalized to `<new-version>`
+
 ## [1.2.0] — 2026-05-30
 
 ### Fixed

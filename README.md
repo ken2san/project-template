@@ -57,14 +57,6 @@ cd project-template
 
 Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. Copies template, replaces basic placeholders, runs `git init`.
 
-**Option B — Apply to existing project:**
-
-```
-./init-project.sh --apply ~/path/to/existing-project
-```
-
-Copies only agent files into an existing project. Skips files that already exist.
-
 ### Step 2 — AI content generation (Copilot Agent)
 
 Open the new project in VS Code, then run:
@@ -76,6 +68,22 @@ Open the new project in VS Code, then run:
 The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Roadmap.md`, `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
 
 > The prompt file is at `.github/prompts/init.prompt.md`.
+
+---
+
+## Applying to an existing project
+
+**Option B — Apply to existing project:**
+
+```
+./init-project.sh --apply ~/path/to/existing-project
+```
+
+Copies only agent files into an existing project. Skips files that already exist. Then run in VS Code:
+
+```
+> Copilot: Run Prompt > apply
+```
 
 ## Supported project types
 

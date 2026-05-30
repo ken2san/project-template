@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General questions
+    url: https://github.com/ken2san/project-template#readme
+    about: See the README for setup instructions and usage guidance.

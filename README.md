@@ -23,6 +23,10 @@ project-template/
 │   └── settings.json                  ← Copilot instruction file references
 └── .github/
     ├── copilot-instructions.md
+    ├── PULL_REQUEST_TEMPLATE.md
+    ├── ISSUE_TEMPLATE/
+    │   ├── bug_report.md
+    │   └── feature_request.md
     ├── instructions/
     │   ├── global.instructions.md         ← Template-managed global rules (overwritten by --apply)
     │   ├── global.custom.instructions.md  ← Project-owned overrides (never overwritten)
@@ -76,25 +80,6 @@ The agent reads your project context, asks 2–3 targeted questions, then writes
    ```
    grep -rn '{{' . --include='*.md'
    ```
-
-| Placeholder                                                | Set by | Files                                                         |
-| ---------------------------------------------------------- | ------ | ------------------------------------------------------------- |
-| `{{PROJECT_NAME}}`                                         | script | all                                                           |
-| `{{DATE}}`                                                 | script | all                                                           |
-| `{{PROJECT_DESCRIPTION}}`                                  | script | copilot-instructions.md, HANDOFF.md                           |
-| `{{STACK}}`                                                | script | copilot-instructions.md, frontend.instructions.md, HANDOFF.md |
-| `{{PHASE_MAX_PLUS_ONE}}`                                   | script | AGENTS.md, copilot-instructions.md, HANDOFF.md                |
-| `{{ENTRY_POINT}}` `{{STATE_LOCATION}}` `{{STATE_LIBRARY}}` | manual | copilot-instructions.md, frontend.instructions.md             |
-| `{{CODE_RULE_*}}`                                          | manual | copilot-instructions.md                                       |
-| `{{PHASE_*}}` `{{CURRENT_PHASE}}`                          | manual | Roadmap.md, HANDOFF.md                                        |
-| `{{BACKEND_*}}` `{{MOCK_DATA_LOCATION}}`                   | manual | backend.instructions.md                                       |
-| `{{INFRA_*}}`                                              | manual | infra.instructions.md                                         |
-| `{{PROTOCOL_OVERVIEW}}` `{{PRINCIPLE_*}}` etc.             | manual | Protocol.md                                                   |
-| `{{DECISION_*}}`                                           | manual | Decisions.md                                                  |
-| `{{LAST_SESSION_*}}` `{{CURRENT_STATE_*}}` etc.            | manual | HANDOFF.md (update each session)                              |
-| `{{LIVE_URL}}`                                             | manual | HANDOFF.md                                                    |
-| `{{DEV_COMMAND}}` `{{DEV_URL}}`                            | manual | global.instructions.md                                        |
-| `{{TEST_COMMAND}}` `{{BUILD_COMMAND}}`                     | manual | global.instructions.md                                        |
 
 ## Supported project types
 

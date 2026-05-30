@@ -31,7 +31,7 @@ if [[ "$1" == "--check" ]]; then
     echo "$match"
     FOUND=1
   done < <(grep -rn '{{[^}]*}}' "$CHECK_DIR" \
-    --include='*.md' --include='*.sh' --include='*.json' \
+    --include='*.md' --include='*.json' \
     --exclude-dir='.git' \
     --exclude-dir='node_modules' \
     2>/dev/null || true)

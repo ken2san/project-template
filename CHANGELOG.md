@@ -6,6 +6,12 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.3.1] — 2026-05-30
+
+### Changed
+- README: clarified primary support targets as VS Code + GitHub Copilot Chat and GitHub Copilot CLI
+- README: added explicit Copilot CLI flow for running `.github/prompts/init.prompt.md` and `.github/prompts/apply.prompt.md`
+
 ## [1.3.0] — 2026-05-30
 
 ### Fixed

@@ -45,6 +45,13 @@ project-template/
 
 **Two-step process: bash handles structure, AI handles content.**
 
+### Primary environments
+
+- VS Code + GitHub Copilot Chat (recommended)
+- GitHub Copilot CLI (`copilot`)
+
+This template is optimized for these two workflows. Instruction files in `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/instructions/*.instructions.md` are intended to be consumed by Copilot agents.
+
 ### Step 1 — Bootstrap (bash)
 
 **Option A — New project (recommended):**
@@ -69,6 +76,8 @@ The agent reads your project context, asks 2–3 targeted questions, then writes
 
 > The prompt file is at `.github/prompts/init.prompt.md`.
 
+If you use GitHub Copilot CLI, start an interactive session with `copilot` in the project root, then ask it to execute the instructions in `.github/prompts/init.prompt.md`.
+
 ---
 
 ## Applying to an existing project
@@ -84,6 +93,8 @@ Copies only agent files into an existing project. Skips files that already exist
 ```
 > Copilot: Run Prompt > apply
 ```
+
+If you use GitHub Copilot CLI, run `copilot` in the target project root and ask it to execute `.github/prompts/apply.prompt.md`.
 
 ## Supported project types
 

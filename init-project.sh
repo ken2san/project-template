@@ -198,10 +198,49 @@ if [[ -z "$STACK" ]]; then
 fi
 
 read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
+if [[ -z "$PHASE_MAX_PLUS_ONE" ]]; then
+  read "PHASE_MAX_PLUS_ONE?Value required, please try again: "
+  if [[ -z "$PHASE_MAX_PLUS_ONE" ]]; then
+    echo "Error: phase number is required." >&2
+    exit 1
+  fi
+fi
+
 read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
+if [[ -z "$DEV_COMMAND" ]]; then
+  read "DEV_COMMAND?Value required, please try again: "
+  if [[ -z "$DEV_COMMAND" ]]; then
+    echo "Error: dev server command is required." >&2
+    exit 1
+  fi
+fi
+
 read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "
+if [[ -z "$DEV_URL" ]]; then
+  read "DEV_URL?Value required, please try again: "
+  if [[ -z "$DEV_URL" ]]; then
+    echo "Error: dev server URL is required." >&2
+    exit 1
+  fi
+fi
+
 read "TEST_COMMAND?Test command (e.g. npm test): "
+if [[ -z "$TEST_COMMAND" ]]; then
+  read "TEST_COMMAND?Value required, please try again: "
+  if [[ -z "$TEST_COMMAND" ]]; then
+    echo "Error: test command is required." >&2
+    exit 1
+  fi
+fi
+
 read "BUILD_COMMAND?Build command (e.g. npm run build): "
+if [[ -z "$BUILD_COMMAND" ]]; then
+  read "BUILD_COMMAND?Value required, please try again: "
+  if [[ -z "$BUILD_COMMAND" ]]; then
+    echo "Error: build command is required." >&2
+    exit 1
+  fi
+fi
 
 DATE=$(date +%Y-%m-%d)
 

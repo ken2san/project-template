@@ -19,7 +19,7 @@ tailored to this project. Do not use generic filler like "Feature 1" or "Rule 1"
 Read these files to understand the project:
 - `AGENTS.md` (project name, stack already filled in)
 - `.github/copilot-instructions.md`
-- `.github/agents/global.agent.md`
+- `.github/instructions/global.instructions.md`
 
 ---
 
@@ -69,10 +69,10 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 - Fill in `{{CODE_RULE_*}}` with 3 project-specific rules (not generic)
 - Fill in `{{ENTRY_POINT}}` and `{{STATE_LOCATION}}` based on the stack
 
-### `.github/agents/frontend.agent.md` (if exists)
+### `.github/instructions/frontend.instructions.md` (if exists)
 - Fill in `{{MODAL_RULE}}` and `{{DIRECTORY_RULE}}` based on the project structure
 
-### `.github/agents/backend.agent.md` (if exists)
+### `.github/instructions/backend.instructions.md` (if exists)
 - Fill in `{{BACKEND_STATUS}}`, `{{BACKEND_PHASE}}`, `{{BACKEND_STACK_*}}`, `{{MOCK_DATA_LOCATION}}`
 
 ---
@@ -93,5 +93,5 @@ If any placeholders remain, either fill them in or explicitly flag them as "inte
 - All generated content must be in English
 - Do not invent features or decisions the user has not confirmed
 - Do not modify `AGENTS.md` — it is already complete
-- Do not modify `.github/agents/global.agent.md` verification commands — already filled in by init script
+- Do not modify `.github/instructions/global.instructions.md` — verification commands already filled in by init script
 - Keep file structure intact; only replace placeholder content

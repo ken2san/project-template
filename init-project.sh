@@ -4,6 +4,8 @@
 # Usage (new project, sibling):      ./init-project.sh --new
 # Usage (new project, custom dir):   ./init-project.sh --new ~/Desktop
 # Usage (apply to existing project): ./init-project.sh --apply ~/path/to/project
+# Usage (check placeholders):        ./init-project.sh --check [dir]
+# Usage (print version):             ./init-project.sh --version
 
 set -e
 

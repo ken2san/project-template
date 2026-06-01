@@ -1,0 +1,30 @@
+{
+  "name": "create-project-template",
+  "version": "1.3.1",
+  "description": "Scaffold a new project with GitHub Copilot agent files",
+  "bin": {
+    "create-project-template": "bin/create-project.js"
+  },
+  "files": [
+    "bin/",
+    "init-project.sh",
+    ".github/",
+    ".vscode/",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "Decisions.md",
+    "HANDOFF.md",
+    "Protocol.md",
+    "Roadmap.md",
+    "VERSION"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["scaffold", "template", "copilot", "github-copilot"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ken2san/project-template.git"
+  }
+}

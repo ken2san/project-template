@@ -159,7 +159,7 @@ if [[ "$1" == "--new" ]]; then
     exit 1
   fi
 
-  rsync -a --exclude='.git' "$TEMPLATE_DIR/" "$DEST/"
+  rsync -a --exclude='.git' --exclude='bin/' --exclude='package.json' --exclude='node_modules/' "$TEMPLATE_DIR/" "$DEST/"
   echo "Copied template to: $DEST (excluding .git)\n"
   cd "$DEST"
 

@@ -54,15 +54,35 @@ This template is optimized for these two workflows. Instruction files in `AGENTS
 
 ### Step 1 — Bootstrap (bash)
 
-**Option A — New project (recommended):**
+**Option A — New project via npx (recommended, no clone required):**
+
+```bash
+npx github:ken2san/project-template --new ~/path/to/parent
+```
+
+Requires Node.js 18+. No install step — runs directly from GitHub.
+
+**Option A' — New project from local clone:**
 
 ```
-git clone https://github.com/YOUR_USERNAME/project-template
+git clone https://github.com/ken2san/project-template
 cd project-template
 ./init-project.sh --new
 ```
 
-Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. Copies template, replaces basic placeholders, runs `git init`.
+**Global install (optional, Mac/Linux):**
+
+```bash
+# Run once to install the project-new command globally
+./init-project.sh --install
+# Add to ~/.zshrc if prompted:
+# export PATH="$HOME/.local/bin:$PATH"
+
+# Then from anywhere:
+project-new --new ~/path/to/parent
+```
+
+Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`.
 
 ### Step 2 — AI content generation (Copilot Agent)
 

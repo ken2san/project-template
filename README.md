@@ -99,7 +99,7 @@ Prompts for project folder name, project type, name, description, stack, phase b
 
 ### Step 2 — AI content generation (Copilot Agent)
 
-When `--new` completes, the script prints a checklist and **automatically copies a bootstrap prompt to your clipboard** (`pbcopy` on macOS, `xclip`/`xsel` on Linux). If neither tool is available, the prompt is printed to the terminal instead.
+When `--new` completes, the script prints a checklist and **automatically copies a bootstrap prompt to your clipboard** (`pbcopy` on macOS, `clip.exe` on WSL2, `xclip`/`xsel` on Linux). If none of those tools are available, the prompt is printed to the terminal instead.
 
 Open the new project in VS Code, paste the clipboard content into Copilot Chat, then also run:
 

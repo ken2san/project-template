@@ -283,6 +283,10 @@ if [[ "$1" == "--new" ]]; then
   if command -v pbcopy &>/dev/null; then
     echo "$BOOT_PROMPT" | pbcopy
     echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."
+  elif command -v clip.exe &>/dev/null; then
+    # WSL2: pipe to Windows-side clipboard via clip.exe
+    echo "$BOOT_PROMPT" | clip.exe
+    echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."
   elif command -v xclip &>/dev/null; then
     echo "$BOOT_PROMPT" | xclip -selection clipboard
     echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."

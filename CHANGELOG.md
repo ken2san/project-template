@@ -9,28 +9,32 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## [1.4.0] — 2026-06-01
 
 ### Added
-- `npx github:ken2san/project-template --new .` で clone 不要で実行できる npx サポートを追加
-- `bin/create-project.js` — Node.js ラッパー（Mac/Linux 対応）
-- `package.json` — npx エントリポイント
-- `--install` フラグ追加：`~/.local/bin/project-new` にシンボリックリンクを作成し、グローバルコマンドとして使えるようにする
-- 全プロンプトにデフォルト値を追加（Enter 連打で通過可能）
-- `PROJECT_NAME` のデフォルトをフォルダ名スラッグから自動導出
+
+- npx support: `npx github:ken2san/project-template --new .` runs directly from GitHub without cloning
+- `bin/create-project.js` — Node.js wrapper that delegates to `init-project.sh` (Mac/Linux)
+- `package.json` — npx entry point with `bin` field and `files` allowlist
+- `--install` flag: creates a symlink at `~/.local/bin/project-new` for global CLI access
+- Default values for all interactive prompts — press Enter to accept and move on
+- `PROJECT_NAME` default auto-derived from the project folder slug
 
 ### Fixed
-- `--new` モードで `cp -r` を `rsync --exclude=.git` に変更し、テンプレートの `.git` が新規プロジェクトに混入するバグを修正
-- `bin/` と `package.json` を `--new` コピー対象から除外
+
+- `--new` mode: replaced `cp -r` with `rsync --exclude=.git` to prevent template `.git` from being copied into new projects
+- `--new` mode: excluded `bin/` and `package.json` from the template copy so they don't appear in generated projects
 
 ---
 
 ## [1.3.1] — 2026-05-30
 
 ### Changed
+
 - README: clarified primary support targets as VS Code + GitHub Copilot Chat and GitHub Copilot CLI
 - README: added explicit Copilot CLI flow for running `.github/prompts/init.prompt.md` and `.github/prompts/apply.prompt.md`
 
 ## [1.3.0] — 2026-05-30
 
 ### Fixed
+
 - `init-project.sh`: `find` sed loop now excludes `.git/` (prevents corrupting git internals)
 - `init-project.sh`: remaining-placeholder `grep` now excludes `.git/` (matches `--check` behavior)
 - `init-project.sh`: `Protocol.md` and `Roadmap.md` added to `SKIP_IF_EXISTS_FILES` so `--apply` seeds them when absent
@@ -52,13 +56,16 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## [1.2.0] — 2026-05-30
 
 ### Fixed
+
 - `--check` flag no longer produces false positives from `init-project.sh` itself (removed `--include='*.sh'` from scan)
 
 ### Changed
+
 - README: removed duplicate placeholder table from Setup section (canonical reference is now "Template variable reference")
 - README: updated file structure tree to include `PULL_REQUEST_TEMPLATE.md` and `ISSUE_TEMPLATE/`
 
 ### Added
+
 - `.github/ISSUE_TEMPLATE/config.yml` to enable GitHub issue template selection UI
 
 ---
@@ -66,6 +73,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## [1.1.0] — 2026-05-30
 
 ### Added
+
 - `.github/PULL_REQUEST_TEMPLATE.md` — stack-agnostic PR checklist aligned to AGENTS.md verification policy
 - `.github/ISSUE_TEMPLATE/bug_report.md` — standard bug report form
 - `.github/ISSUE_TEMPLATE/feature_request.md` — standard feature request form
@@ -79,6 +87,7 @@ This project uses [Semantic Versioning](https://semver.org/).
 ## [1.0.0] — 2026-05-27
 
 ### Added
+
 - Initial release of project-template bootstrap scaffold
 - `init-project.sh` with `--new`, `--apply`, and `--version` modes
 - `AGENTS.md` — universal AI agent rules (self-healing loop, scope policy, git policy)

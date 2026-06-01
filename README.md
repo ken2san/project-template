@@ -50,11 +50,11 @@ project-template/
 
 ### Platform requirements
 
-| Platform | Support | Notes |
-|----------|---------|-------|
-| macOS | ✓ Full | `zsh` built-in |
-| Linux | ✓ Full | `zsh` required (`apt install zsh` / `brew install zsh`) |
-| Windows | ⚠ WSL2 only | Run inside WSL2 Ubuntu; native PowerShell is not supported |
+| Platform | Support     | Notes                                                      |
+| -------- | ----------- | ---------------------------------------------------------- |
+| macOS    | ✓ Full      | `zsh` built-in                                             |
+| Linux    | ✓ Full      | `zsh` required (`apt install zsh` / `brew install zsh`)    |
+| Windows  | ⚠ WSL2 only | Run inside WSL2 Ubuntu; native PowerShell is not supported |
 
 > **Windows note:** The bootstrap script requires `zsh`. On Windows, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and run all commands inside the WSL2 terminal. Native PowerShell / Command Prompt support is planned for a future release.
 
@@ -99,7 +99,9 @@ Prompts for project folder name, project type, name, description, stack, phase b
 
 ### Step 2 — AI content generation (Copilot Agent)
 
-Open the new project in VS Code, then run:
+When `--new` completes, the script prints a checklist and **automatically copies a bootstrap prompt to your clipboard** (`pbcopy` on macOS, `xclip`/`xsel` on Linux). If neither tool is available, the prompt is printed to the terminal instead.
+
+Open the new project in VS Code, paste the clipboard content into Copilot Chat, then also run:
 
 ```
 > Copilot: Run Prompt > init

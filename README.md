@@ -48,6 +48,16 @@ project-template/
 
 **Two-step process: bash handles structure, AI handles content.**
 
+### Platform requirements
+
+| Platform | Support | Notes |
+|----------|---------|-------|
+| macOS | ✓ Full | `zsh` built-in |
+| Linux | ✓ Full | `zsh` required (`apt install zsh` / `brew install zsh`) |
+| Windows | ⚠ WSL2 only | Run inside WSL2 Ubuntu; native PowerShell is not supported |
+
+> **Windows note:** The bootstrap script requires `zsh`. On Windows, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and run all commands inside the WSL2 terminal. Native PowerShell / Command Prompt support is planned for a future release.
+
 ### Primary environments
 
 - VS Code + GitHub Copilot Chat (recommended)

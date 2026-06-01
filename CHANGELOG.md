@@ -6,6 +6,16 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.0] — 2026-06-01
+
+### Added
+
+- `--new` completion: next-step checklist printed (`cd`, `code .`, Copilot Chat prompt)
+- `--new` completion: bootstrap prompt auto-copied to clipboard (`pbcopy` on macOS, `xclip`/`xsel` on Linux; printed as fallback)
+- README: Platform requirements table with macOS / Linux / Windows (WSL2) support status
+
+---
+
 ## [1.4.0] — 2026-06-01
 
 ### Added

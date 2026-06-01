@@ -272,6 +272,25 @@ fi
 echo "\n=== Done. ==="
 if [[ "$1" == "--new" ]]; then
   echo "Project created at: $(pwd)"
-  echo "\nNext: open this folder in VS Code, then run:"
-  echo "  > Copilot: Run Prompt > init"
+  echo "\nNext steps:"
+  echo "  1. cd $DEST"
+  echo "  2. code ."
+  echo "  3. Paste the bootstrap prompt into Copilot Chat (see below)"
+  echo "  4. Copilot: Run Prompt > init"
+
+  BOOT_PROMPT="Read AGENTS.md and all files in .github/instructions/ to understand this project's context and rules. Then run the 'init' prompt to fill in all placeholder tokens and set up the project."
+
+  if command -v pbcopy &>/dev/null; then
+    echo "$BOOT_PROMPT" | pbcopy
+    echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."
+  elif command -v xclip &>/dev/null; then
+    echo "$BOOT_PROMPT" | xclip -selection clipboard
+    echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."
+  elif command -v xsel &>/dev/null; then
+    echo "$BOOT_PROMPT" | xsel --clipboard --input
+    echo "\n✓ Bootstrap prompt copied to clipboard — paste into Copilot Chat."
+  else
+    echo "\n→ First prompt (paste into Copilot Chat manually):"
+    echo "  $BOOT_PROMPT"
+  fi
 fi

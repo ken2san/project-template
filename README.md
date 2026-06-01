@@ -124,64 +124,64 @@ If you use GitHub Copilot CLI, run `copilot` in the target project root and ask 
 
 ## Template variable reference
 
-| Variable | Description |
-| --- | --- |
-| `{{PROJECT_NAME}}` | Human-readable project name used across template documents. |
-| `{{DATE}}` | Last-updated date stamp for generated template files. |
-| `{{PROJECT_DESCRIPTION}}` | One-line summary describing the project. |
-| `{{STACK}}` | Primary technology stack summary for project context. |
-| `{{PHASE_MAX_PLUS_ONE}}` | First blocked phase number for scope control rules. |
-| `{{DEV_COMMAND}}` | Command used to start the development environment. |
-| `{{DEV_URL}}` | URL where the development environment is reachable. |
-| `{{TEST_COMMAND}}` | Command used to run the project test suite. |
-| `{{BUILD_COMMAND}}` | Command used to build production-ready artifacts. |
-| `{{PHASE_1_NAME}}` | Name of the first delivery phase. |
-| `{{PHASE_1_GOAL}}` | Goal statement for phase 1. |
-| `{{PHASE_1_SCOPE_1}}` | First scoped item for phase 1. |
-| `{{PHASE_1_SCOPE_2}}` | Second scoped item for phase 1. |
-| `{{PHASE_2_NAME}}` | Name of the second delivery phase. |
-| `{{PHASE_2_GOAL}}` | Goal statement for phase 2. |
-| `{{PHASE_2_SCOPE_1}}` | First scoped item for phase 2. |
-| `{{PHASE_2_SCOPE_2}}` | Second scoped item for phase 2. |
-| `{{CURRENT_PHASE}}` | Current active phase indicator used in status docs. |
-| `{{LIVE_URL}}` | Current live deployment URL or deployment status note. |
-| `{{LAST_SESSION_1}}` | First key outcome from the previous working session. |
-| `{{LAST_SESSION_2}}` | Second key outcome from the previous working session. |
-| `{{LAST_SESSION_3}}` | Third key outcome from the previous working session. |
-| `{{CURRENT_STATE_1}}` | First current-state checkpoint for handoff context. |
-| `{{CURRENT_STATE_2}}` | Second current-state checkpoint for handoff context. |
-| `{{CONSTRAINT_1}}` | Additional project-specific delivery constraint. |
-| `{{NEXT_TASK}}` | Highest-priority next action for the incoming session. |
-| `{{PROTOCOL_OVERVIEW}}` | Overview paragraph describing project operating rules. |
-| `{{PRINCIPLE_1}}` | First guiding principle in the protocol file. |
-| `{{PRINCIPLE_2}}` | Second guiding principle in the protocol file. |
-| `{{PRINCIPLE_3}}` | Third guiding principle in the protocol file. |
-| `{{DATA_MODEL_DESCRIPTION}}` | Summary of the project data model or state shape. |
-| `{{WORKFLOW_DESCRIPTION}}` | Summary of the core project workflow. |
-| `{{DECISION_SUMMARY}}` | One-line architecture decision statement. |
-| `{{DECISION_CONTEXT}}` | Context that motivated the architecture decision. |
-| `{{ALTERNATIVE_1}}` | First alternative considered during decision-making. |
-| `{{REASON_1}}` | Reason the first alternative was rejected. |
-| `{{ALTERNATIVE_2}}` | Second alternative considered during decision-making. |
-| `{{REASON_2}}` | Reason the second alternative was rejected. |
-| `{{DECISION_CONSEQUENCES}}` | Expected consequences of the chosen architecture decision. |
-| `{{ENTRY_POINT}}` | Main application entry file or execution boundary. |
-| `{{STATE_LOCATION}}` | Location where application state is managed or stored. |
-| `{{CODE_RULE_1}}` | First project-specific coding rule for agents. |
-| `{{CODE_RULE_2}}` | Second project-specific coding rule for agents. |
-| `{{CODE_RULE_3}}` | Third project-specific coding rule for agents. |
-| `{{INFRA_STACK}}` | Infrastructure stack summary used by infra guidance. |
-| `{{INFRA_RULE_1}}` | First infrastructure-specific implementation rule. |
-| `{{INFRA_RULE_2}}` | Second infrastructure-specific implementation rule. |
-| `{{STATE_LIBRARY}}` | State management library expected in frontend work. |
-| `{{MODAL_RULE}}` | Rule governing modal or overlay behavior patterns. |
-| `{{DIRECTORY_RULE}}` | Rule describing directory structure conventions. |
-| `{{BACKEND_STATUS}}` | Current backend implementation status summary. |
-| `{{BACKEND_PHASE}}` | Phase number when backend implementation is expected. |
-| `{{BACKEND_STACK_1}}` | First planned backend stack component. |
-| `{{BACKEND_STACK_2}}` | Second planned backend stack component. |
-| `{{BACKEND_STACK_3}}` | Third planned backend stack component. |
-| `{{MOCK_DATA_LOCATION}}` | Path or location for backend mock data. |
+| Variable                     | Description                                                 |
+| ---------------------------- | ----------------------------------------------------------- |
+| `{{PROJECT_NAME}}`           | Human-readable project name used across template documents. |
+| `{{DATE}}`                   | Last-updated date stamp for generated template files.       |
+| `{{PROJECT_DESCRIPTION}}`    | One-line summary describing the project.                    |
+| `{{STACK}}`                  | Primary technology stack summary for project context.       |
+| `{{PHASE_MAX_PLUS_ONE}}`     | First blocked phase number for scope control rules.         |
+| `{{DEV_COMMAND}}`            | Command used to start the development environment.          |
+| `{{DEV_URL}}`                | URL where the development environment is reachable.         |
+| `{{TEST_COMMAND}}`           | Command used to run the project test suite.                 |
+| `{{BUILD_COMMAND}}`          | Command used to build production-ready artifacts.           |
+| `{{PHASE_1_NAME}}`           | Name of the first delivery phase.                           |
+| `{{PHASE_1_GOAL}}`           | Goal statement for phase 1.                                 |
+| `{{PHASE_1_SCOPE_1}}`        | First scoped item for phase 1.                              |
+| `{{PHASE_1_SCOPE_2}}`        | Second scoped item for phase 1.                             |
+| `{{PHASE_2_NAME}}`           | Name of the second delivery phase.                          |
+| `{{PHASE_2_GOAL}}`           | Goal statement for phase 2.                                 |
+| `{{PHASE_2_SCOPE_1}}`        | First scoped item for phase 2.                              |
+| `{{PHASE_2_SCOPE_2}}`        | Second scoped item for phase 2.                             |
+| `{{CURRENT_PHASE}}`          | Current active phase indicator used in status docs.         |
+| `{{LIVE_URL}}`               | Current live deployment URL or deployment status note.      |
+| `{{LAST_SESSION_1}}`         | First key outcome from the previous working session.        |
+| `{{LAST_SESSION_2}}`         | Second key outcome from the previous working session.       |
+| `{{LAST_SESSION_3}}`         | Third key outcome from the previous working session.        |
+| `{{CURRENT_STATE_1}}`        | First current-state checkpoint for handoff context.         |
+| `{{CURRENT_STATE_2}}`        | Second current-state checkpoint for handoff context.        |
+| `{{CONSTRAINT_1}}`           | Additional project-specific delivery constraint.            |
+| `{{NEXT_TASK}}`              | Highest-priority next action for the incoming session.      |
+| `{{PROTOCOL_OVERVIEW}}`      | Overview paragraph describing project operating rules.      |
+| `{{PRINCIPLE_1}}`            | First guiding principle in the protocol file.               |
+| `{{PRINCIPLE_2}}`            | Second guiding principle in the protocol file.              |
+| `{{PRINCIPLE_3}}`            | Third guiding principle in the protocol file.               |
+| `{{DATA_MODEL_DESCRIPTION}}` | Summary of the project data model or state shape.           |
+| `{{WORKFLOW_DESCRIPTION}}`   | Summary of the core project workflow.                       |
+| `{{DECISION_SUMMARY}}`       | One-line architecture decision statement.                   |
+| `{{DECISION_CONTEXT}}`       | Context that motivated the architecture decision.           |
+| `{{ALTERNATIVE_1}}`          | First alternative considered during decision-making.        |
+| `{{REASON_1}}`               | Reason the first alternative was rejected.                  |
+| `{{ALTERNATIVE_2}}`          | Second alternative considered during decision-making.       |
+| `{{REASON_2}}`               | Reason the second alternative was rejected.                 |
+| `{{DECISION_CONSEQUENCES}}`  | Expected consequences of the chosen architecture decision.  |
+| `{{ENTRY_POINT}}`            | Main application entry file or execution boundary.          |
+| `{{STATE_LOCATION}}`         | Location where application state is managed or stored.      |
+| `{{CODE_RULE_1}}`            | First project-specific coding rule for agents.              |
+| `{{CODE_RULE_2}}`            | Second project-specific coding rule for agents.             |
+| `{{CODE_RULE_3}}`            | Third project-specific coding rule for agents.              |
+| `{{INFRA_STACK}}`            | Infrastructure stack summary used by infra guidance.        |
+| `{{INFRA_RULE_1}}`           | First infrastructure-specific implementation rule.          |
+| `{{INFRA_RULE_2}}`           | Second infrastructure-specific implementation rule.         |
+| `{{STATE_LIBRARY}}`          | State management library expected in frontend work.         |
+| `{{MODAL_RULE}}`             | Rule governing modal or overlay behavior patterns.          |
+| `{{DIRECTORY_RULE}}`         | Rule describing directory structure conventions.            |
+| `{{BACKEND_STATUS}}`         | Current backend implementation status summary.              |
+| `{{BACKEND_PHASE}}`          | Phase number when backend implementation is expected.       |
+| `{{BACKEND_STACK_1}}`        | First planned backend stack component.                      |
+| `{{BACKEND_STACK_2}}`        | Second planned backend stack component.                     |
+| `{{BACKEND_STACK_3}}`        | Third planned backend stack component.                      |
+| `{{MOCK_DATA_LOCATION}}`     | Path or location for backend mock data.                     |
 
 ---
 

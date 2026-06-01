@@ -142,8 +142,8 @@ if [[ "$1" == "--new" ]]; then
     exit 1
   fi
 
-  cp -r "$TEMPLATE_DIR" "$DEST"
-  echo "Copied template to: $DEST\n"
+  rsync -a --exclude='.git' "$TEMPLATE_DIR/" "$DEST/"
+  echo "Copied template to: $DEST (excluding .git)\n"
   cd "$DEST"
 
   echo "$TEMPLATE_VERSION" > .template-version

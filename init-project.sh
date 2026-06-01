@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 # init-project.sh — Initialize a new project from template
-# Usage (in-place init):             ./init-project.sh
-# Usage (new project, sibling):      ./init-project.sh --new
-# Usage (new project, custom dir):   ./init-project.sh --new ~/Desktop
-# Usage (apply to existing project): ./init-project.sh --apply ~/path/to/project
-# Usage (check for unresolved):      ./init-project.sh --check [dir]
+# Usage (install globally):          ./init-project.sh --install   → adds `project-new` to /usr/local/bin
+# Usage (new project, sibling):      project-new --new
+# Usage (new project, custom dir):   project-new --new ~/Desktop
+# Usage (apply to existing project): project-new --apply ~/path/to/project
+# Usage (check for unresolved):      project-new --check [dir]
 
 set -e
 
@@ -15,6 +15,23 @@ TEMPLATE_VERSION="$(cat "$TEMPLATE_DIR/VERSION" 2>/dev/null || echo 'unknown')"
 # --- Version flag ---
 if [[ "$1" == "--version" ]]; then
   echo "project-template v${TEMPLATE_VERSION}"
+  exit 0
+fi
+
+# --- Install flag: symlink this script for global access ---
+if [[ "$1" == "--install" ]]; then
+  LINK_PATH="${2:-$HOME/.local/bin/project-new}"
+  LINK_PATH="${LINK_PATH/#\~/$HOME}"
+  mkdir -p "$(dirname "$LINK_PATH")"
+  ln -sf "$TEMPLATE_DIR/init-project.sh" "$LINK_PATH"
+  echo "Installed: $LINK_PATH -> $TEMPLATE_DIR/init-project.sh"
+  # Warn if the target dir is not in PATH
+  if [[ ":$PATH:" != *":$(dirname $LINK_PATH):"* ]]; then
+    echo ""
+    echo "Note: $(dirname $LINK_PATH) is not in your PATH."
+    echo "Add this to ~/.zshrc:  export PATH=\"\$HOME/.local/bin:\$PATH\""
+  fi
+  echo "\nUsage: project-new --new [dest]"
   exit 0
 fi
 
@@ -172,77 +189,36 @@ if [[ "$1" != "--apply" ]]; then
 fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---
-read "PROJECT_NAME?Project name (e.g. MyApp): "
-if [[ -z "$PROJECT_NAME" ]]; then
-  read "PROJECT_NAME?Value required, please try again: "
-  if [[ -z "$PROJECT_NAME" ]]; then
-    echo "Error: project name is required." >&2
-    exit 1
-  fi
+# Derive default project name from slug (--new mode) or fall back to generic
+if [[ -n "$PROJECT_SLUG" ]]; then
+  _default_name="$(echo "$PROJECT_SLUG" | sed 's/^project-//' | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')"
+else
+  _default_name="MyApp"
 fi
 
-read "PROJECT_DESCRIPTION?One-line description: "
-if [[ -z "$PROJECT_DESCRIPTION" ]]; then
-  read "PROJECT_DESCRIPTION?Value required, please try again: "
-  if [[ -z "$PROJECT_DESCRIPTION" ]]; then
-    echo "Error: project description is required." >&2
-    exit 1
-  fi
-fi
+read "PROJECT_NAME?Project name [${_default_name}]: "
+PROJECT_NAME="${PROJECT_NAME:-$_default_name}"
 
-read "STACK?Tech stack (e.g. React 18, Vite, TailwindCSS): "
-if [[ -z "$STACK" ]]; then
-  read "STACK?Value required, please try again: "
-  if [[ -z "$STACK" ]]; then
-    echo "Error: stack is required." >&2
-    exit 1
-  fi
-fi
+read "PROJECT_DESCRIPTION?One-line description [TBD]: "
+PROJECT_DESCRIPTION="${PROJECT_DESCRIPTION:-TBD}"
 
-read "PHASE_MAX_PLUS_ONE?First phase to block (e.g. 3): "
-if [[ -z "$PHASE_MAX_PLUS_ONE" ]]; then
-  read "PHASE_MAX_PLUS_ONE?Value required, please try again: "
-  if [[ -z "$PHASE_MAX_PLUS_ONE" ]]; then
-    echo "Error: phase number is required." >&2
-    exit 1
-  fi
-fi
+read "STACK?Tech stack [React 18, Vite, TailwindCSS]: "
+STACK="${STACK:-React 18, Vite, TailwindCSS}"
 
-read "DEV_COMMAND?Dev server command (e.g. npm run dev): "
-if [[ -z "$DEV_COMMAND" ]]; then
-  read "DEV_COMMAND?Value required, please try again: "
-  if [[ -z "$DEV_COMMAND" ]]; then
-    echo "Error: dev server command is required." >&2
-    exit 1
-  fi
-fi
+read "PHASE_MAX_PLUS_ONE?First phase to block [3]: "
+PHASE_MAX_PLUS_ONE="${PHASE_MAX_PLUS_ONE:-3}"
 
-read "DEV_URL?Dev server URL (e.g. http://localhost:3000): "
-if [[ -z "$DEV_URL" ]]; then
-  read "DEV_URL?Value required, please try again: "
-  if [[ -z "$DEV_URL" ]]; then
-    echo "Error: dev server URL is required." >&2
-    exit 1
-  fi
-fi
+read "DEV_COMMAND?Dev server command [npm run dev]: "
+DEV_COMMAND="${DEV_COMMAND:-npm run dev}"
 
-read "TEST_COMMAND?Test command (e.g. npm test): "
-if [[ -z "$TEST_COMMAND" ]]; then
-  read "TEST_COMMAND?Value required, please try again: "
-  if [[ -z "$TEST_COMMAND" ]]; then
-    echo "Error: test command is required." >&2
-    exit 1
-  fi
-fi
+read "DEV_URL?Dev server URL [http://localhost:5173]: "
+DEV_URL="${DEV_URL:-http://localhost:5173}"
 
-read "BUILD_COMMAND?Build command (e.g. npm run build): "
-if [[ -z "$BUILD_COMMAND" ]]; then
-  read "BUILD_COMMAND?Value required, please try again: "
-  if [[ -z "$BUILD_COMMAND" ]]; then
-    echo "Error: build command is required." >&2
-    exit 1
-  fi
-fi
+read "TEST_COMMAND?Test command [npm test]: "
+TEST_COMMAND="${TEST_COMMAND:-npm test}"
+
+read "BUILD_COMMAND?Build command [npm run build]: "
+BUILD_COMMAND="${BUILD_COMMAND:-npm run build}"
 
 DATE=$(date +%Y-%m-%d)
 

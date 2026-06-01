@@ -6,6 +6,22 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.0] — 2026-06-01
+
+### Added
+- `npx github:ken2san/project-template --new .` で clone 不要で実行できる npx サポートを追加
+- `bin/create-project.js` — Node.js ラッパー（Mac/Linux 対応）
+- `package.json` — npx エントリポイント
+- `--install` フラグ追加：`~/.local/bin/project-new` にシンボリックリンクを作成し、グローバルコマンドとして使えるようにする
+- 全プロンプトにデフォルト値を追加（Enter 連打で通過可能）
+- `PROJECT_NAME` のデフォルトをフォルダ名スラッグから自動導出
+
+### Fixed
+- `--new` モードで `cp -r` を `rsync --exclude=.git` に変更し、テンプレートの `.git` が新規プロジェクトに混入するバグを修正
+- `bin/` と `package.json` を `--new` コピー対象から除外
+
+---
+
 ## [1.3.1] — 2026-05-30
 
 ### Changed

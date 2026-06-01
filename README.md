@@ -17,7 +17,10 @@ project-template/
 ├── Decisions.md                       ← Architecture decision records (ADR)
 ├── HANDOFF.md                         ← AI session handoff template
 ├── .gitignore
-├── init-project.sh                    ← Bootstrap script (--new flag supported)
+├── init-project.sh                    ← Bootstrap script
+├── package.json                       ← npx entry point
+├── bin/
+│   └── create-project.js             ← Node.js wrapper for npx
 ├── VERSION                            ← Template semantic version (e.g. 1.0.0)
 ├── .vscode/
 │   └── settings.json                  ← VS Code workspace settings
@@ -104,7 +107,13 @@ If you use GitHub Copilot CLI, start an interactive session with `copilot` in th
 
 **Option B — Apply to existing project:**
 
+```bash
+npx github:ken2san/project-template --apply ~/path/to/existing-project
 ```
+
+Or from local clone:
+
+```bash
 ./init-project.sh --apply ~/path/to/existing-project
 ```
 
@@ -191,7 +200,9 @@ This template is versioned with Git and semantic versioning (`VERSION` file).
 
 **Check current version:**
 
-```
+```bash
+npx github:ken2san/project-template --version
+# or from local clone:
 ./init-project.sh --version
 ```
 

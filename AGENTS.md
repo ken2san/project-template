@@ -101,6 +101,9 @@ Before marking any task complete:
 
 - Project context and workspace rules: `.github/copilot-instructions.md`
 - Role-specific instructions: `.github/instructions/*.instructions.md`
+  Copilot applies these automatically by path (`applyTo`). Other agents (Claude Code, Codex, etc.)
+  do not auto-apply path-scoped files — before frontend/backend/infra work, read the matching
+  instructions file yourself.
 - Project-specific overrides (safe from template upgrades): `.github/instructions/global.custom.instructions.md`
 - Keep each instruction file under 200 lines — longer files reduce AI adherence.
   Move details to scoped files or prompts rather than growing a single file.

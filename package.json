@@ -8,6 +8,7 @@
   "files": [
     "bin/",
     "init-project.sh",
+    ".claude/",
     ".github/",
     ".vscode/",
     "AGENTS.md",

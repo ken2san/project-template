@@ -111,6 +111,12 @@ if [[ "$1" == "--apply" ]]; then
   SKIP_IF_EXISTS_FILES+=(".github/prompts/init.prompt.md")
   SKIP_IF_EXISTS_FILES+=(".github/prompts/apply.prompt.md")
 
+  # Claude Code launchers for the same prompts (thin pointers, no duplicated content).
+  # Namespaced under template/ so /template:init doesn't collide with Claude Code's
+  # built-in /init command.
+  SKIP_IF_EXISTS_FILES+=(".claude/commands/template/init.md")
+  SKIP_IF_EXISTS_FILES+=(".claude/commands/template/apply.md")
+
   for f in "${FORCE_FILES[@]}"; do
     dest="$TARGET/$f"
     destdir="$(dirname "$dest")"

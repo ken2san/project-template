@@ -26,6 +26,11 @@ project-template/
 ├── VERSION                            ← Template semantic version (e.g. 1.0.0)
 ├── .vscode/
 │   └── settings.json                  ← VS Code workspace settings
+├── .claude/
+│   └── commands/
+│       └── template/
+│           ├── init.md                ← Claude Code /template:init → .github/prompts/init.prompt.md
+│           └── apply.md               ← Claude Code /template:apply → .github/prompts/apply.prompt.md
 └── .github/
     ├── copilot-instructions.md
     ├── PULL_REQUEST_TEMPLATE.md
@@ -64,8 +69,12 @@ project-template/
 
 - VS Code + GitHub Copilot Chat (recommended)
 - GitHub Copilot CLI (`copilot`)
+- Claude Code (CLI or IDE extension)
 
-This template is optimized for these two workflows. Instruction files in `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/instructions/*.instructions.md` are intended to be consumed by Copilot agents.
+`AGENTS.md` is the single source of truth for agent behavior and is read automatically by all
+three. Copilot additionally auto-applies `.github/copilot-instructions.md` and the path-scoped
+`.github/instructions/*.instructions.md` files by itself; other agents don't auto-apply path-scoped
+files, so AGENTS.md tells them to read the relevant one before frontend/backend/infra work.
 
 ### Step 1 — Bootstrap (bash)
 
@@ -115,6 +124,8 @@ The agent reads your project context, asks 2–3 targeted questions, then writes
 
 If you use GitHub Copilot CLI, start an interactive session with `copilot` in the project root, then ask it to execute the instructions in `.github/prompts/init.prompt.md`.
 
+If you use Claude Code, run `/template:init` in the project root — it launches the same `.github/prompts/init.prompt.md` workflow. (Namespaced to avoid colliding with Claude Code's built-in `/init`.)
+
 ---
 
 ## Applying to an existing project
@@ -138,6 +149,8 @@ Copies only agent files into an existing project. Skips files that already exist
 ```
 
 If you use GitHub Copilot CLI, run `copilot` in the target project root and ask it to execute `.github/prompts/apply.prompt.md`.
+
+If you use Claude Code, run `/template:apply` in the target project root.
 
 ## Supported project types
 

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible problem in the project template
+about: Report a reproducible problem in this project
 title: "[Bug] "
 labels: bug
 assignees: ""
@@ -24,7 +24,7 @@ If applicable, add screenshots or logs to help explain your problem.
 ## Environment
 - OS:
 - Shell:
-- Template version (`./init-project.sh --version`):
+- Bootstrap template version (`./init-project.sh --version`, if present):
 
 ## Additional context
 Add any other context about the problem here.

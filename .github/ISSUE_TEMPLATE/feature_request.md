@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an improvement for the project template
+about: Suggest an improvement for this project
 title: "[Feature] "
 labels: enhancement
 assignees: ""

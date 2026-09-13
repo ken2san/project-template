@@ -88,7 +88,6 @@ if [[ "$1" == "--apply" ]]; then
   # Files always overwritten (pure template rules, no project-specific content)
   FORCE_FILES=(
     "AGENTS.md"
-    ".vscode/settings.json"
     ".github/instructions/global.instructions.md"
   )
 
@@ -98,6 +97,7 @@ if [[ "$1" == "--apply" ]]; then
     "HANDOFF.md"
     "Protocol.md"
     "Roadmap.md"
+    ".vscode/settings.json"
     ".github/copilot-instructions.md"
     ".github/instructions/frontend.instructions.md"
     ".github/instructions/backend.instructions.md"
@@ -159,9 +159,22 @@ if [[ "$1" == "--new" ]]; then
     exit 1
   fi
 
-  rsync -a --exclude='.git' --exclude='bin/' --exclude='package.json' --exclude='node_modules/' "$TEMPLATE_DIR/" "$DEST/"
+  # README.md and CHANGELOG.md describe project-template itself (this repo),
+  # not the generated project — they are replaced below with project-specific
+  # versions instead of being copied verbatim. VERSION is kept: the copy of
+  # init-project.sh in the generated project reads it from its own directory
+  # to answer `--version`/`--check`.
+  rsync -a --exclude='.git' --exclude='bin/' --exclude='package.json' --exclude='node_modules/' \
+    --exclude='README.md' --exclude='README.project.md' \
+    --exclude='CHANGELOG.md' --exclude='CHANGELOG.project.md' \
+    "$TEMPLATE_DIR/" "$DEST/"
   echo "Copied template to: $DEST (excluding .git)\n"
   cd "$DEST"
+
+  cp "$TEMPLATE_DIR/README.project.md" README.md
+  cp "$TEMPLATE_DIR/CHANGELOG.project.md" CHANGELOG.md
+  echo "  wrote: README.md (project-specific)"
+  echo "  wrote: CHANGELOG.md (project-specific)"
 
   echo "$TEMPLATE_VERSION" > .template-version
   echo "  wrote: .template-version ($TEMPLATE_VERSION)"
@@ -227,7 +240,11 @@ echo "\n--- Applying replacements to all .md and .json files ---"
 find . \( -name "*.md" -o -name "settings.json" \) \
   -not -path '*/.git/*' \
   -not -path '*/node_modules/*' | while read file; do
-  sed -i '' \
+  # -i.bak (with an explicit suffix) is the portable form: BSD sed (macOS) and
+  # GNU sed (Linux/WSL2) parse a bare `-i ''` differently, and GNU sed treats
+  # the empty string as a file operand and errors out. The backup is removed
+  # immediately after.
+  sed -i.bak \
     -e "s|{{PROJECT_NAME}}|${PROJECT_NAME}|g" \
     -e "s|{{DATE}}|${DATE}|g" \
     -e "s|{{PROJECT_DESCRIPTION}}|${PROJECT_DESCRIPTION}|g" \
@@ -237,7 +254,7 @@ find . \( -name "*.md" -o -name "settings.json" \) \
     -e "s|{{DEV_URL}}|${DEV_URL}|g" \
     -e "s|{{TEST_COMMAND}}|${TEST_COMMAND}|g" \
     -e "s|{{BUILD_COMMAND}}|${BUILD_COMMAND}|g" \
-    "$file"
+    "$file" && rm -f "$file.bak"
   echo "  updated: $file"
 done
 

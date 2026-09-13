@@ -6,6 +6,19 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.1] — 2026-09-13
+
+### Fixed
+
+- `init-project.sh`: `sed -i ''` (BSD-only syntax) replaced with the portable `sed -i.bak` + cleanup form — the placeholder-fill step was aborting immediately on Linux/WSL2 with GNU sed
+- `init-project.sh --apply`: `.vscode/settings.json` moved from `FORCE_FILES` to `SKIP_IF_EXISTS_FILES` — it was being silently overwritten with `{}` on every `--apply` run, destroying any existing VS Code workspace settings
+- `init-project.sh --new`: generated projects no longer inherit project-template's own `README.md` and `CHANGELOG.md` verbatim; new `README.project.md` / `CHANGELOG.project.md` are copied in as project-specific `README.md` / `CHANGELOG.md` instead
+- `.github/ISSUE_TEMPLATE/bug_report.md`, `feature_request.md`: reworded "the project template" → "this project" so copied issue templates make sense in generated projects
+- `bin/create-project.js`: missing `zsh` now prints an actionable error (with a WSL2 pointer) instead of exiting silently with no output
+- `package.json`: `version` was out of sync with `VERSION` (1.3.1 vs 1.5.0); both now track together
+
+---
+
 ## [1.5.0] — 2026-06-01
 
 ### Added

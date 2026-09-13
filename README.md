@@ -10,7 +10,9 @@ New project bootstrap template for Copilot Agent projects.
 
 ```
 project-template/
-├── README.md
+├── README.md                          ← This file (about project-template itself; not copied to new projects)
+├── README.project.md                  ← Becomes the new project's README.md
+├── CHANGELOG.project.md               ← Becomes the new project's CHANGELOG.md
 ├── AGENTS.md                          ← Universal AI agent rules (self-contained)
 ├── Roadmap.md                         ← Phase management and scope boundaries
 ├── Protocol.md                        ← Project protocol / system rules

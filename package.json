@@ -1,6 +1,6 @@
 {
   "name": "create-project-template",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Scaffold a new project with GitHub Copilot agent files",
   "bin": {
     "create-project-template": "bin/create-project.js"

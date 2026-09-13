@@ -87,9 +87,10 @@ project-template/
 - VS Code + GitHub Copilot Chat (recommended)
 - GitHub Copilot CLI (`copilot`)
 - Claude Code (CLI or IDE extension)
+- Codex CLI (`codex`)
 
 `AGENTS.md` is the single source of truth for agent behavior and is read automatically by all
-three. Copilot additionally auto-applies `.github/copilot-instructions.md` and the path-scoped
+four. Copilot additionally auto-applies `.github/copilot-instructions.md` and the path-scoped
 `.github/instructions/*.instructions.md` files by itself; other agents don't auto-apply path-scoped
 files, so AGENTS.md tells them to read the relevant one before frontend/backend/infra work.
 
@@ -151,6 +152,8 @@ If you use GitHub Copilot CLI, start an interactive session with `copilot` in th
 
 If you use Claude Code, run `/template:init` in the project root — it launches the same `.github/prompts/init.prompt.md` workflow. (Namespaced to avoid colliding with Claude Code's built-in `/init`.)
 
+If you use Codex CLI, start `codex` in the project root and ask it to execute the instructions in `.github/prompts/init.prompt.md`. (Codex's own custom-prompt files live outside the repo in `~/.codex/prompts/`, so they can't be shipped here the way `/template:init` is for Claude Code — pointing Codex at the prompt file directly works the same way it does for Copilot CLI.)
+
 ---
 
 ## Applying to an existing project
@@ -176,6 +179,8 @@ Copies only agent files into an existing project. Skips files that already exist
 If you use GitHub Copilot CLI, run `copilot` in the target project root and ask it to execute `.github/prompts/apply.prompt.md`.
 
 If you use Claude Code, run `/template:apply` in the target project root.
+
+If you use Codex CLI, run `codex` in the target project root and ask it to execute `.github/prompts/apply.prompt.md`.
 
 ## Supported project types
 

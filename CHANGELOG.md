@@ -6,6 +6,18 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.7.1] — 2026-09-13
+
+### Added
+
+- README: document Codex CLI as a fourth primary environment. AGENTS.md already covers it (Codex
+  reads AGENTS.md automatically, same as Claude Code); Codex has no repo-shareable equivalent to
+  Claude Code's `/template:init` (its custom prompts live in `~/.codex/prompts/`, outside the
+  repo, and are being deprecated in favor of Skills), so it's documented the same way as Copilot
+  CLI: point it at `.github/prompts/{init,apply}.prompt.md` directly.
+
+---
+
 ## [1.7.0] — 2026-09-13
 
 ### Changed

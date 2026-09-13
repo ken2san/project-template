@@ -6,6 +6,29 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.6.0] — 2026-09-13
+
+### Added
+
+- Claude Code support alongside Copilot: `.claude/commands/template/{init,apply}.md` launch the
+  same `.github/prompts/*.prompt.md` workflows via `/template:init` / `/template:apply`
+  (namespaced under `template/` so they don't collide with Claude Code's built-in `/init`)
+- `AGENTS.md`: note that Copilot auto-applies `.github/instructions/*.instructions.md` by path,
+  but other agents don't auto-apply path-scoped files and should read the matching one themselves
+- `init-project.sh --uninstall`: removes the `project-new` symlink; refuses to delete the target
+  if it isn't a symlink, so it can't remove an unrelated file at that path
+- `test/smoke-test.sh` and `.github/workflows/test.yml`: end-to-end test of `--new`, `--apply`,
+  `--install`, and `--uninstall` against a temp directory, run in CI on both `ubuntu-latest`
+  (GNU sed) and `macos-latest` (BSD sed) on every push/PR
+
+### Fixed
+
+- `init-project.sh --new`: exclude `test/` and `.github/workflows/` from the rsync copy — like
+  `README.md`/`CHANGELOG.md`, these describe and validate project-template itself and have no
+  meaning inside a generated project
+
+---
+
 ## [1.5.1] — 2026-09-13
 
 ### Fixed

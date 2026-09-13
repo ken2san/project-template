@@ -20,6 +20,9 @@ secrets/
 *.log
 logs/
 
+# sed -i.bak backups (init-project.sh removes these itself; ignored as a safety net)
+*.bak
+
 # OS
 .DS_Store
 

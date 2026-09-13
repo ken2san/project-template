@@ -96,6 +96,13 @@ if [[ "$1" == "--apply" ]]; then
   echo "Applying agent files to: $TARGET\n"
 
   # DESIGN NOTE (for maintainers and AI agents):
+  # All shipped content lives under modules/<name>/, mirroring the destination
+  # project's own file tree (e.g. modules/base/AGENTS.md -> AGENTS.md,
+  # modules/frontend/.github/instructions/frontend.instructions.md ->
+  # .github/instructions/frontend.instructions.md). There is no separate
+  # "core" tier — `base` is just the one module every preset always includes.
+  # dest_rel_path() strips the "modules/<name>/" prefix to get that dest path.
+  #
   # Two categories of files exist for --apply:
   #
   #   FORCE_FILES        — overwritten on every --apply run.
@@ -108,53 +115,51 @@ if [[ "$1" == "--apply" ]]; then
   #
   # Files always overwritten (pure template rules, no project-specific content)
   FORCE_FILES=(
-    "AGENTS.md"
-    ".github/instructions/global.instructions.md"
+    "modules/base/AGENTS.md"
+    "modules/base/.github/instructions/global.instructions.md"
   )
 
-  # Files copied only if not present (contain project-specific or placeholder content)
+  # Files copied only if not present (contain project-specific or placeholder content).
+  # --apply doesn't prompt for a project type, so it includes every module —
+  # unlike --new, an existing project's stack isn't being chosen here, only augmented.
   SKIP_IF_EXISTS_FILES=(
-    "Decisions.md"
-    "HANDOFF.md"
-    "Protocol.md"
-    "Roadmap.md"
-    ".vscode/settings.json"
-    ".github/copilot-instructions.md"
-    ".github/instructions/frontend.instructions.md"
-    ".github/instructions/backend.instructions.md"
-    ".github/instructions/infra.instructions.md"
+    "modules/base/Decisions.md"
+    "modules/base/HANDOFF.md"
+    "modules/base/Protocol.md"
+    "modules/base/Roadmap.md"
+    "modules/base/.vscode/settings.json"
+    "modules/base/.github/copilot-instructions.md"
+    "modules/base/.github/instructions/global.custom.instructions.md"
+    "modules/base/.github/prompts/init.prompt.md"
+    "modules/base/.github/prompts/apply.prompt.md"
+    "modules/base/.claude/commands/template/init.md"
+    "modules/base/.claude/commands/template/apply.md"
+    "modules/frontend/.github/instructions/frontend.instructions.md"
+    "modules/backend/.github/instructions/backend.instructions.md"
+    "modules/infra/.github/instructions/infra.instructions.md"
   )
 
-  # global.custom.instructions.md: project-owned — only create if absent, never overwrite
-  SKIP_IF_EXISTS_FILES+=(".github/instructions/global.custom.instructions.md")
-
-  # prompts: utilities — copy if absent, allow project to customize
-  SKIP_IF_EXISTS_FILES+=(".github/prompts/init.prompt.md")
-  SKIP_IF_EXISTS_FILES+=(".github/prompts/apply.prompt.md")
-
-  # Claude Code launchers for the same prompts (thin pointers, no duplicated content).
-  # Namespaced under template/ so /template:init doesn't collide with Claude Code's
-  # built-in /init command.
-  SKIP_IF_EXISTS_FILES+=(".claude/commands/template/init.md")
-  SKIP_IF_EXISTS_FILES+=(".claude/commands/template/apply.md")
+  dest_rel_path() {
+    echo "${1#modules/*/}"
+  }
 
   for f in "${FORCE_FILES[@]}"; do
-    dest="$TARGET/$f"
-    destdir="$(dirname "$dest")"
-    mkdir -p "$destdir"
+    rel="$(dest_rel_path "$f")"
+    dest="$TARGET/$rel"
+    mkdir -p "$(dirname "$dest")"
     cp "$TEMPLATE_DIR/$f" "$dest"
-    echo "  updated: $f"
+    echo "  updated: $rel"
   done
 
   for f in "${SKIP_IF_EXISTS_FILES[@]}"; do
-    dest="$TARGET/$f"
-    destdir="$(dirname "$dest")"
-    mkdir -p "$destdir"
+    rel="$(dest_rel_path "$f")"
+    dest="$TARGET/$rel"
+    mkdir -p "$(dirname "$dest")"
     if [[ -f "$dest" ]]; then
-      echo "  skip (exists): $f"
+      echo "  skip (exists): $rel"
     else
       cp "$TEMPLATE_DIR/$f" "$dest"
-      echo "  copied: $f"
+      echo "  copied: $rel"
     fi
   done
 
@@ -186,48 +191,42 @@ if [[ "$1" == "--new" ]]; then
     exit 1
   fi
 
-  # README.md and CHANGELOG.md describe project-template itself (this repo),
-  # not the generated project — they are replaced below with project-specific
-  # versions instead of being copied verbatim. VERSION is kept: the copy of
-  # init-project.sh in the generated project reads it from its own directory
-  # to answer `--version`/`--check`. test/ and .github/workflows/ test
-  # init-project.sh itself and have no meaning inside a generated project.
-  rsync -a --exclude='.git' --exclude='bin/' --exclude='package.json' --exclude='node_modules/' \
-    --exclude='README.md' --exclude='README.project.md' \
-    --exclude='CHANGELOG.md' --exclude='CHANGELOG.project.md' \
-    --exclude='test/' --exclude='.github/workflows/' \
-    "$TEMPLATE_DIR/" "$DEST/"
-  echo "Copied template to: $DEST (excluding .git)\n"
-  cd "$DEST"
+  mkdir -p "$DEST"
 
-  cp "$TEMPLATE_DIR/README.project.md" README.md
-  cp "$TEMPLATE_DIR/CHANGELOG.project.md" CHANGELOG.md
-  echo "  wrote: README.md (project-specific)"
-  echo "  wrote: CHANGELOG.md (project-specific)"
-
-  echo "$TEMPLATE_VERSION" > .template-version
-  echo "  wrote: .template-version ($TEMPLATE_VERSION)"
-fi
-
-# --- Project type selection (skip in --apply mode to avoid deleting existing files) ---
-if [[ "$1" != "--apply" ]]; then
+  # Project type is really just a preset list of modules. `base` (AGENTS.md,
+  # Roadmap/Protocol/Decisions/HANDOFF, README, CHANGELOG, copilot/Claude
+  # config, issue/PR templates, ...) is not a special "core" tier — it's a
+  # normal module every preset happens to always include, because a project
+  # generated without it wouldn't have a reason to use this template at all.
   echo "Project type:"
-  echo "  1) webapp   (frontend + optional backend)"
-  echo "  2) game     (client-only, no backend agent)"
-  echo "  3) api      (backend-first, no frontend agent)"
+  echo "  1) webapp   (frontend + backend + infra)"
+  echo "  2) game     (frontend + infra, no backend)"
+  echo "  3) api      (backend + infra, no frontend)"
   read "PROJECT_TYPE_NUM?Select (1/2/3, default=1): "
   PROJECT_TYPE=${PROJECT_TYPE_NUM:-1}
 
   case "$PROJECT_TYPE" in
-    2)
-      rm -f .github/instructions/backend.instructions.md
-      echo "  removed: backend.instructions.md (game project)"
-      ;;
-    3)
-      rm -f .github/instructions/frontend.instructions.md
-      echo "  removed: frontend.instructions.md (api project)"
-      ;;
+    2) SELECTED_MODULES=(base frontend infra) ;;
+    3) SELECTED_MODULES=(base backend infra) ;;
+    *) SELECTED_MODULES=(base frontend backend infra) ;;
   esac
+
+  for m in "${SELECTED_MODULES[@]}"; do
+    rsync -a "$TEMPLATE_DIR/modules/$m/" "$DEST/"
+    echo "  added module: $m"
+  done
+
+  # Plumbing needed for the tool itself to keep working inside the generated
+  # project (--check/--version there) — not content, so not a module.
+  cp "$TEMPLATE_DIR/VERSION" "$DEST/VERSION"
+  cp "$TEMPLATE_DIR/.gitignore" "$DEST/.gitignore"
+  cp "$TEMPLATE_DIR/init-project.sh" "$DEST/init-project.sh"
+  echo "  wrote: VERSION, .gitignore, init-project.sh"
+
+  cd "$DEST"
+
+  echo "$TEMPLATE_VERSION" > .template-version
+  echo "  wrote: .template-version ($TEMPLATE_VERSION)"
 fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---

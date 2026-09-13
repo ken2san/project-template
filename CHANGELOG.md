@@ -6,6 +6,32 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.7.0] — 2026-09-13
+
+### Changed
+
+- Restructured all shipped content under `modules/<name>/`, each mirroring the file tree it
+  produces inside a generated project. There is no separate "core" tier: `base` (AGENTS.md,
+  Roadmap/Protocol/Decisions/HANDOFF, README, CHANGELOG, copilot/Claude config, issue/PR
+  templates) is just the one module every project type always includes; `frontend`/`backend`/
+  `infra` are the modules a project type selects between. A project type is now literally a
+  preset list of modules (see the updated "Supported project types" table in README.md).
+- `init-project.sh --new`: replaced "copy everything, then delete the unwanted role file" with
+  "copy only the selected modules" — no more `rm -f` of files that were copied just to be
+  discarded a moment later.
+- `init-project.sh --apply`: file lists now source from `modules/<name>/...` via a small
+  `dest_rel_path()` helper instead of assuming source and destination paths are identical;
+  external behavior (which files are forced vs. skip-if-exists) is unchanged.
+- Dropped the `README.project.md` / `CHANGELOG.project.md` naming workaround — now that they live
+  in their own `modules/base/` directory, they no longer collide with project-template's own
+  root `README.md` / `CHANGELOG.md` and can just be named normally.
+- `package.json`: `files` list collapsed from ~14 explicit entries to `modules/`, `bin/`,
+  `init-project.sh`, `.gitignore`, `VERSION` — adding a module no longer means updating this list.
+- `test/smoke-test.sh`: added assertions that each project type includes/excludes the right
+  modules (webapp: all three; game: frontend+infra, no backend; api: backend+infra, no frontend).
+
+---
+
 ## [1.6.0] — 2026-09-13
 
 ### Added

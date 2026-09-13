@@ -59,6 +59,34 @@ pass "git repository was initialized"
 [[ -e "$PROJECT/.github/workflows" ]] && fail ".github/workflows/ (project-template's own CI) leaked into the generated project"
 pass "project-template's own test/CI files were not copied into the generated project"
 
+echo "=== --new: module selection matches project type (base is always included) ==="
+
+[[ -f "$PROJECT/.github/instructions/frontend.instructions.md" ]] || fail "webapp (type 1) should include the frontend module"
+[[ -f "$PROJECT/.github/instructions/backend.instructions.md" ]] || fail "webapp (type 1) should include the backend module"
+[[ -f "$PROJECT/.github/instructions/infra.instructions.md" ]] || fail "webapp (type 1) should include the infra module"
+pass "webapp (type 1) included frontend + backend + infra"
+
+GAME_LOG="$WORKDIR/game.log"
+printf "gametest\n2\nGame Test\nA smoke-tested game\nUnity\n3\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+  | zsh ./init-project.sh --new "$WORKDIR" >"$GAME_LOG" 2>&1 \
+  || { cat "$GAME_LOG"; fail "--new (game) exited non-zero"; }
+GAME_PROJECT="$WORKDIR/gametest"
+[[ -f "$GAME_PROJECT/.github/instructions/frontend.instructions.md" ]] || fail "game (type 2) should include the frontend module"
+[[ -f "$GAME_PROJECT/.github/instructions/backend.instructions.md" ]] && fail "game (type 2) should NOT include the backend module"
+[[ -f "$GAME_PROJECT/.github/instructions/infra.instructions.md" ]] || fail "game (type 2) should include the infra module"
+[[ -f "$GAME_PROJECT/AGENTS.md" ]] || fail "game (type 2) should still include the base module (AGENTS.md)"
+pass "game (type 2) included frontend + infra + base, excluded backend"
+
+API_LOG="$WORKDIR/api.log"
+printf "apitest\n3\nAPI Test\nA smoke-tested api\nFastAPI\n3\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+  | zsh ./init-project.sh --new "$WORKDIR" >"$API_LOG" 2>&1 \
+  || { cat "$API_LOG"; fail "--new (api) exited non-zero"; }
+API_PROJECT="$WORKDIR/apitest"
+[[ -f "$API_PROJECT/.github/instructions/backend.instructions.md" ]] || fail "api (type 3) should include the backend module"
+[[ -f "$API_PROJECT/.github/instructions/frontend.instructions.md" ]] && fail "api (type 3) should NOT include the frontend module"
+[[ -f "$API_PROJECT/.github/instructions/infra.instructions.md" ]] || fail "api (type 3) should include the infra module"
+pass "api (type 3) included backend + infra + base, excluded frontend"
+
 echo "=== --apply: does not clobber an existing .vscode/settings.json ==="
 
 APPLY_DIR="$WORKDIR/existing-project"

@@ -1,6 +1,6 @@
 {
   "name": "create-project-template",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Scaffold a new project with GitHub Copilot agent files",
   "bin": {
     "create-project-template": "bin/create-project.js"
@@ -8,17 +8,8 @@
   "files": [
     "bin/",
     "init-project.sh",
-    ".claude/",
-    ".github/",
-    ".vscode/",
-    "AGENTS.md",
-    "CHANGELOG.md",
-    "CHANGELOG.project.md",
-    "Decisions.md",
-    "HANDOFF.md",
-    "Protocol.md",
-    "Roadmap.md",
-    "README.project.md",
+    "modules/",
+    ".gitignore",
     "VERSION"
   ],
   "engines": {

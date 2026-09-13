@@ -8,49 +8,62 @@ New project bootstrap template for Copilot Agent projects.
 
 ## File Structure
 
+Shipped content lives entirely under `modules/<name>/`, each mirroring the file tree it produces
+inside a generated project (e.g. `modules/base/AGENTS.md` → `AGENTS.md`). There is no separate
+"core" tier — `base` is simply the one module every project type always includes, because a
+project generated without it (no `AGENTS.md`, no `Roadmap.md`/`Protocol.md`/`Decisions.md`, no
+README) wouldn't have a reason to use this template. `frontend`/`backend`/`infra` are the optional
+modules a project type selects between. Adding a new module later means adding a new
+`modules/<name>/` directory and referencing it from a preset — nothing else in the mechanism
+changes. Everything outside `modules/` is either about maintaining project-template itself
+(`README.md`, `CHANGELOG.md`, `test/`, `.github/workflows/`) or plumbing the bootstrap script
+needs at runtime (`VERSION`, `.gitignore`, `init-project.sh` itself — copied as-is, not through the
+module mechanism, since they aren't content).
+
 ```
 project-template/
-├── README.md                          ← This file (about project-template itself; not copied to new projects)
-├── README.project.md                  ← Becomes the new project's README.md
-├── CHANGELOG.project.md               ← Becomes the new project's CHANGELOG.md
-├── AGENTS.md                          ← Universal AI agent rules (self-contained)
-├── Roadmap.md                         ← Phase management and scope boundaries
-├── Protocol.md                        ← Project protocol / system rules
-├── Decisions.md                       ← Architecture decision records (ADR)
-├── HANDOFF.md                         ← AI session handoff template
-├── .gitignore
-├── init-project.sh                    ← Bootstrap script
+├── README.md                          ← About project-template itself; not copied to new projects
+├── CHANGELOG.md                       ← project-template's own changelog; not copied
+├── init-project.sh                    ← Bootstrap script (also copied as-is into generated projects)
+├── VERSION                            ← Template semantic version (plumbing, copied as-is)
+├── .gitignore                         ← Plumbing, copied as-is into generated projects
 ├── test/
 │   └── smoke-test.sh                  ← End-to-end test for --new/--apply (see Testing section)
 ├── package.json                       ← npx entry point
 ├── bin/
 │   └── create-project.js             ← Node.js wrapper for npx
-├── VERSION                            ← Template semantic version (e.g. 1.0.0)
-├── .vscode/
-│   └── settings.json                  ← VS Code workspace settings
-├── .claude/
-│   └── commands/
-│       └── template/
-│           ├── init.md                ← Claude Code /template:init → .github/prompts/init.prompt.md
-│           └── apply.md               ← Claude Code /template:apply → .github/prompts/apply.prompt.md
-└── .github/
-    ├── copilot-instructions.md
-    ├── PULL_REQUEST_TEMPLATE.md
-    ├── workflows/
-    │   └── test.yml                   ← Runs test/smoke-test.sh on ubuntu-latest + macos-latest
-    ├── ISSUE_TEMPLATE/
-    │   ├── bug_report.md
-    │   ├── feature_request.md
-    │   └── config.yml
-    ├── instructions/
-    │   ├── global.instructions.md         ← Template-managed global rules (overwritten by --apply)
-    │   ├── global.custom.instructions.md  ← Project-owned overrides (never overwritten)
-    │   ├── frontend.instructions.md
-    │   ├── backend.instructions.md
-    │   └── infra.instructions.md
-    └── prompts/
-        ├── init.prompt.md             ← AI content generation prompt
-        └── apply.prompt.md            ← Placeholder fill prompt for --apply mode
+├── .github/
+│   └── workflows/
+│       └── test.yml                   ← Runs test/smoke-test.sh on ubuntu-latest + macos-latest
+└── modules/
+    ├── base/                          ← Always included, every project type
+    │   ├── AGENTS.md
+    │   ├── Roadmap.md
+    │   ├── Protocol.md
+    │   ├── Decisions.md
+    │   ├── HANDOFF.md
+    │   ├── README.md                  ← Becomes the new project's README.md
+    │   ├── CHANGELOG.md               ← Becomes the new project's CHANGELOG.md
+    │   ├── .vscode/settings.json
+    │   ├── .claude/commands/template/
+    │   │   ├── init.md                ← Claude Code /template:init → .github/prompts/init.prompt.md
+    │   │   └── apply.md               ← Claude Code /template:apply → .github/prompts/apply.prompt.md
+    │   └── .github/
+    │       ├── copilot-instructions.md
+    │       ├── PULL_REQUEST_TEMPLATE.md
+    │       ├── ISSUE_TEMPLATE/
+    │       │   ├── bug_report.md
+    │       │   ├── feature_request.md
+    │       │   └── config.yml
+    │       ├── instructions/
+    │       │   ├── global.instructions.md         ← Template-managed (overwritten by --apply)
+    │       │   └── global.custom.instructions.md  ← Project-owned (never overwritten)
+    │       └── prompts/
+    │           ├── init.prompt.md     ← AI content generation prompt
+    │           └── apply.prompt.md    ← Placeholder fill prompt for --apply mode
+    ├── frontend/.github/instructions/frontend.instructions.md   ← Included by webapp, game
+    ├── backend/.github/instructions/backend.instructions.md     ← Included by webapp, api
+    └── infra/.github/instructions/infra.instructions.md         ← Included by webapp, game, api
 ```
 
 ---
@@ -166,9 +179,13 @@ If you use Claude Code, run `/template:apply` in the target project root.
 
 ## Supported project types
 
-- `webapp` — frontend-focused project with an optional backend agent path.
-- `game` — client-only project type that removes backend agent instructions.
-- `api` — backend-first project type that removes frontend agent instructions.
+A project type is just a preset list of `modules/` to include (`base` is always one of them):
+
+| Type     | Modules included              |
+| -------- | ------------------------------ |
+| `webapp` | `base`, `frontend`, `backend`, `infra` |
+| `game`   | `base`, `frontend`, `infra` (no backend) |
+| `api`    | `base`, `backend`, `infra` (no frontend) |
 
 ## Template variable reference
 

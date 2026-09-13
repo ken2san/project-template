@@ -12,6 +12,13 @@ TEMPLATE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
+# init-project.sh runs `git init && git commit` for --new. Give the child
+# processes a git identity via env vars (not `git config --global`) so the
+# test is self-contained on a machine/CI runner with no git identity
+# configured, without touching the caller's own global git config.
+export GIT_AUTHOR_NAME="Smoke Test" GIT_AUTHOR_EMAIL="smoke-test@example.com"
+export GIT_COMMITTER_NAME="Smoke Test" GIT_COMMITTER_EMAIL="smoke-test@example.com"
+
 fail() { echo "FAIL: $1" >&2; exit 1; }
 pass() { echo "PASS: $1"; }
 

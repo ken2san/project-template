@@ -12,10 +12,14 @@ Shipped content lives entirely under `modules/<name>/`, each mirroring the file 
 inside a generated project (e.g. `modules/base/AGENTS.md` → `AGENTS.md`). There is no separate
 "core" tier — `base` is simply the one module every project type always includes, because a
 project generated without it (no `AGENTS.md`, no `Roadmap.md`/`Protocol.md`/`Decisions.md`, no
-README) wouldn't have a reason to use this template. `frontend`/`backend`/`infra` are the optional
-modules a project type selects between. Adding a new module later means adding a new
-`modules/<name>/` directory and referencing it from a preset — nothing else in the mechanism
-changes. Everything outside `modules/` is either about maintaining project-template itself
+README) wouldn't have a reason to use this template. `frontend`/`backend`/`infra`/`testing` are
+optional modules: a project type preset includes some of them by default, and "custom" mode
+(see [Supported project types](#supported-project-types)) lets you pick any combination — the
+whole point is Unix-style composition: each module is a small, simple, self-contained piece, and
+combining them is how you scale from a one-off script up to a large multi-surface project. Adding
+a new module later means adding a new `modules/<name>/` directory — both `--new`'s custom mode and
+`--apply` discover it automatically, nothing else in the mechanism changes. Everything outside
+`modules/` is either about maintaining project-template itself
 (`README.md`, `CHANGELOG.md`, `test/`, `.github/workflows/`) or plumbing the bootstrap script
 needs at runtime (`VERSION`, `.gitignore`, `init-project.sh` itself — copied as-is, not through the
 module mechanism, since they aren't content).
@@ -63,7 +67,8 @@ project-template/
     │           └── apply.prompt.md    ← Placeholder fill prompt for --apply mode
     ├── frontend/.github/instructions/frontend.instructions.md   ← Included by webapp, game
     ├── backend/.github/instructions/backend.instructions.md     ← Included by webapp, api
-    └── infra/.github/instructions/infra.instructions.md         ← Included by webapp, game, api
+    ├── infra/.github/instructions/infra.instructions.md         ← Included by webapp, game, api
+    └── testing/.github/instructions/testing.instructions.md     ← Custom mode only, no preset includes it yet
 ```
 
 ---
@@ -191,6 +196,12 @@ A project type is just a preset list of `modules/` to include (`base` is always 
 | `webapp` | `base`, `frontend`, `backend`, `infra` |
 | `game`   | `base`, `frontend`, `infra` (no backend) |
 | `api`    | `base`, `backend`, `infra` (no frontend) |
+| `custom` | `base` + any combination of the other modules, chosen one by one |
+
+`custom` asks a `y/n` question per available module instead of picking a preset — it's how you
+reach a module no preset includes yet (like `testing`), or drop one a preset would otherwise add.
+The available modules are read from the `modules/` directory itself, so this list grows
+automatically as modules are added — no script changes needed.
 
 ## Template variable reference
 
@@ -252,6 +263,8 @@ A project type is just a preset list of `modules/` to include (`base` is always 
 | `{{BACKEND_STACK_2}}`        | Second planned backend stack component.                     |
 | `{{BACKEND_STACK_3}}`        | Third planned backend stack component.                      |
 | `{{MOCK_DATA_LOCATION}}`     | Path or location for backend mock data.                     |
+| `{{TESTING_APPROACH}}`       | Testing strategy summary (unit/integration/e2e split, coverage expectations). |
+| `{{TESTING_RULE_1}}`         | One project-specific testing rule.                          |
 
 ---
 

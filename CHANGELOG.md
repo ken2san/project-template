@@ -6,6 +6,30 @@ This project uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.8.0] — 2026-09-13
+
+### Added
+
+- `init-project.sh --new`: project type prompt gained a 4th option, `custom`, which asks a `y/n`
+  question per available module instead of picking a preset. The available module list is
+  discovered from the `modules/` directory itself, so it grows automatically as modules are added.
+- `modules/testing/.github/instructions/testing.instructions.md`: a new module (testing
+  conventions for the AI agent to follow), added specifically as a proof that the module mechanism
+  scales — no preset references it, so the only way to reach it is `custom` mode. Placeholders
+  documented in README's variable reference; fill guidance added to `init.prompt.md`.
+- `init-project.sh --apply`: non-base module files are now discovered dynamically (scanning
+  `modules/<name>/` for every module except `base`) instead of being hand-listed, so `testing` (and
+  any future module) is picked up automatically without editing the script.
+- `test/smoke-test.sh`: added coverage for custom mode (selecting only `testing`, declining
+  frontend/backend/infra) and for `--apply` picking up a module with zero script changes for it.
+
+This is the point of the module/base split from 1.7.0: composing small, simple modules — rather
+than a lightweight vs. full-featured tradeoff — is meant to scale from a one-off script (base
+only) up to a large multi-surface project (every module), and adding a module (`testing`) required
+touching only `modules/`, `init.prompt.md`, and README's reference table — not the copy mechanism.
+
+---
+
 ## [1.7.1] — 2026-09-13
 
 ### Added

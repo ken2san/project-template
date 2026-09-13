@@ -134,10 +134,17 @@ if [[ "$1" == "--apply" ]]; then
     "modules/base/.github/prompts/apply.prompt.md"
     "modules/base/.claude/commands/template/init.md"
     "modules/base/.claude/commands/template/apply.md"
-    "modules/frontend/.github/instructions/frontend.instructions.md"
-    "modules/backend/.github/instructions/backend.instructions.md"
-    "modules/infra/.github/instructions/infra.instructions.md"
   )
+
+  # Every non-base module's files, discovered dynamically so adding a new
+  # modules/<name>/ directory needs no change here.
+  for d in "$TEMPLATE_DIR"/modules/*/; do
+    m="$(basename "$d")"
+    [[ "$m" == "base" ]] && continue
+    for filepath in $(find "$d" -type f); do
+      SKIP_IF_EXISTS_FILES+=("modules/$m/${filepath#$d}")
+    done
+  done
 
   dest_rel_path() {
     echo "${1#modules/*/}"
@@ -198,16 +205,39 @@ if [[ "$1" == "--new" ]]; then
   # config, issue/PR templates, ...) is not a special "core" tier — it's a
   # normal module every preset happens to always include, because a project
   # generated without it wouldn't have a reason to use this template at all.
+  #
+  # Presets are just a shortcut over the same primitive "custom" exposes:
+  # picking modules individually. AVAILABLE_MODULES is discovered from the
+  # modules/ directory itself, so a newly added module (e.g. modules/testing/)
+  # is automatically selectable via "custom" without touching this script.
+  AVAILABLE_MODULES=()
+  for d in "$TEMPLATE_DIR"/modules/*/; do
+    m="$(basename "$d")"
+    [[ "$m" == "base" ]] && continue
+    AVAILABLE_MODULES+=("$m")
+  done
+
   echo "Project type:"
   echo "  1) webapp   (frontend + backend + infra)"
   echo "  2) game     (frontend + infra, no backend)"
   echo "  3) api      (backend + infra, no frontend)"
-  read "PROJECT_TYPE_NUM?Select (1/2/3, default=1): "
+  echo "  4) custom   (choose modules individually: ${AVAILABLE_MODULES[*]})"
+  read "PROJECT_TYPE_NUM?Select (1/2/3/4, default=1): "
   PROJECT_TYPE=${PROJECT_TYPE_NUM:-1}
 
   case "$PROJECT_TYPE" in
     2) SELECTED_MODULES=(base frontend infra) ;;
     3) SELECTED_MODULES=(base backend infra) ;;
+    4)
+      SELECTED_MODULES=(base)
+      for m in "${AVAILABLE_MODULES[@]}"; do
+        read "INCLUDE_MODULE?Include '$m' module? (y/n) [y]: "
+        INCLUDE_MODULE="${INCLUDE_MODULE:-y}"
+        if [[ "$INCLUDE_MODULE" == "y" || "$INCLUDE_MODULE" == "Y" ]]; then
+          SELECTED_MODULES+=("$m")
+        fi
+      done
+      ;;
     *) SELECTED_MODULES=(base frontend backend infra) ;;
   esac
 

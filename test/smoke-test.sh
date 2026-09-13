@@ -94,6 +94,24 @@ API_PROJECT="$WORKDIR/apitest"
 [[ -f "$API_PROJECT/.github/instructions/infra.instructions.md" ]] || fail "api (type 3) should include the infra module"
 pass "api (type 3) included backend + infra + base, excluded frontend"
 
+echo "=== --new: custom mode reaches a module no preset includes ==="
+
+# Custom mode asks y/n per available module, in the order backend, frontend,
+# infra, testing (alphabetical, matches modules/*/ glob order). Answer n/n/n/y
+# to prove `testing` — a module no preset references — is reachable, and that
+# declining the others actually excludes them (composition works both ways).
+CUSTOM_LOG="$WORKDIR/custom.log"
+printf "customtest\n4\nn\nn\nn\ny\nCustom Test\nA smoke-tested custom project\nNode\n3\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+  | zsh ./init-project.sh --new "$WORKDIR" >"$CUSTOM_LOG" 2>&1 \
+  || { cat "$CUSTOM_LOG"; fail "--new (custom) exited non-zero"; }
+CUSTOM_PROJECT="$WORKDIR/customtest"
+[[ -f "$CUSTOM_PROJECT/AGENTS.md" ]] || fail "custom mode should still include the base module (AGENTS.md)"
+[[ -f "$CUSTOM_PROJECT/.github/instructions/testing.instructions.md" ]] || fail "custom mode should include testing when answered y (no preset includes it)"
+[[ -f "$CUSTOM_PROJECT/.github/instructions/backend.instructions.md" ]] && fail "custom mode should exclude backend when answered n"
+[[ -f "$CUSTOM_PROJECT/.github/instructions/frontend.instructions.md" ]] && fail "custom mode should exclude frontend when answered n"
+[[ -f "$CUSTOM_PROJECT/.github/instructions/infra.instructions.md" ]] && fail "custom mode should exclude infra when answered n"
+pass "custom mode included base + testing only, excluded frontend/backend/infra"
+
 echo "=== --apply: does not clobber an existing .vscode/settings.json ==="
 
 APPLY_DIR="$WORKDIR/existing-project"
@@ -111,6 +129,10 @@ pass "--apply preserved the existing .vscode/settings.json"
 
 [[ -f "$APPLY_DIR/AGENTS.md" ]] || fail "--apply did not write AGENTS.md"
 pass "--apply wrote AGENTS.md"
+
+[[ -f "$APPLY_DIR/.github/instructions/testing.instructions.md" ]] \
+  || fail "--apply should discover and copy every non-base module dynamically, including testing"
+pass "--apply dynamically included the testing module without any script change for it"
 
 echo "=== install / uninstall: symlink lifecycle ==="
 

@@ -79,6 +79,10 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 - Fill in `{{INFRA_STACK}}` with the planned infrastructure (hosting, CI, CDN, etc.)
 - Fill in `{{INFRA_RULE_1}}` and `{{INFRA_RULE_2}}` with deployment constraints specific to this project
 
+### `.github/instructions/testing.instructions.md` (if exists)
+- Fill in `{{TESTING_APPROACH}}` with the actual testing strategy (unit/integration/e2e split, coverage expectations)
+- Fill in `{{TESTING_RULE_1}}` with one project-specific testing rule (e.g. required test types for new endpoints, snapshot policy)
+
 ---
 
 ## Step 5 — Verify

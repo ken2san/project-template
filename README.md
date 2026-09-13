@@ -106,6 +106,14 @@ cd project-template
 project-new --new ~/path/to/parent
 ```
 
+**Uninstall:**
+
+```bash
+project-new --uninstall
+```
+
+Removes the `project-new` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
+
 Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`.
 
 ### Step 2 — AI content generation (Copilot Agent)

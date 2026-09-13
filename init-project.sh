@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # init-project.sh — Initialize a new project from template
 # Usage (install globally):          ./init-project.sh --install   → adds `project-new` to /usr/local/bin
+# Usage (uninstall):                 project-new --uninstall       → removes the `project-new` symlink
 # Usage (new project, sibling):      project-new --new
 # Usage (new project, custom dir):   project-new --new ~/Desktop
 # Usage (apply to existing project): project-new --apply ~/path/to/project
@@ -32,6 +33,26 @@ if [[ "$1" == "--install" ]]; then
     echo "Add this to ~/.zshrc:  export PATH=\"\$HOME/.local/bin:\$PATH\""
   fi
   echo "\nUsage: project-new --new [dest]"
+  exit 0
+fi
+
+# --- Uninstall flag: remove the project-new symlink ---
+if [[ "$1" == "--uninstall" ]]; then
+  LINK_PATH="${2:-$HOME/.local/bin/project-new}"
+  LINK_PATH="${LINK_PATH/#\~/$HOME}"
+
+  if [[ ! -e "$LINK_PATH" && ! -L "$LINK_PATH" ]]; then
+    echo "Nothing to uninstall: $LINK_PATH does not exist."
+    exit 0
+  fi
+
+  if [[ ! -L "$LINK_PATH" ]]; then
+    echo "Error: $LINK_PATH exists but is not a symlink (not something --install created). Refusing to delete it." >&2
+    exit 1
+  fi
+
+  rm "$LINK_PATH"
+  echo "Uninstalled: removed $LINK_PATH"
   exit 0
 fi
 

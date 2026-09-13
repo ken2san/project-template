@@ -190,10 +190,12 @@ if [[ "$1" == "--new" ]]; then
   # not the generated project — they are replaced below with project-specific
   # versions instead of being copied verbatim. VERSION is kept: the copy of
   # init-project.sh in the generated project reads it from its own directory
-  # to answer `--version`/`--check`.
+  # to answer `--version`/`--check`. test/ and .github/workflows/ test
+  # init-project.sh itself and have no meaning inside a generated project.
   rsync -a --exclude='.git' --exclude='bin/' --exclude='package.json' --exclude='node_modules/' \
     --exclude='README.md' --exclude='README.project.md' \
     --exclude='CHANGELOG.md' --exclude='CHANGELOG.project.md' \
+    --exclude='test/' --exclude='.github/workflows/' \
     "$TEMPLATE_DIR/" "$DEST/"
   echo "Copied template to: $DEST (excluding .git)\n"
   cd "$DEST"

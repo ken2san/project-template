@@ -20,6 +20,8 @@ project-template/
 ├── HANDOFF.md                         ← AI session handoff template
 ├── .gitignore
 ├── init-project.sh                    ← Bootstrap script
+├── test/
+│   └── smoke-test.sh                  ← End-to-end test for --new/--apply (see Testing section)
 ├── package.json                       ← npx entry point
 ├── bin/
 │   └── create-project.js             ← Node.js wrapper for npx
@@ -34,6 +36,8 @@ project-template/
 └── .github/
     ├── copilot-instructions.md
     ├── PULL_REQUEST_TEMPLATE.md
+    ├── workflows/
+    │   └── test.yml                   ← Runs test/smoke-test.sh on ubuntu-latest + macos-latest
     ├── ISSUE_TEMPLATE/
     │   ├── bug_report.md
     │   ├── feature_request.md
@@ -226,6 +230,23 @@ If you use Claude Code, run `/template:apply` in the target project root.
 | `{{BACKEND_STACK_2}}`        | Second planned backend stack component.                     |
 | `{{BACKEND_STACK_3}}`        | Third planned backend stack component.                      |
 | `{{MOCK_DATA_LOCATION}}`     | Path or location for backend mock data.                     |
+
+---
+
+## Testing
+
+`test/smoke-test.sh` runs `init-project.sh --new` and `--apply` end-to-end against a temp
+directory and asserts on regressions found during template review (e.g. generated projects
+must not inherit project-template's own README/CHANGELOG, `--apply` must not overwrite an
+existing `.vscode/settings.json`, the placeholder-fill step must not leave `.bak` files behind).
+
+```bash
+./test/smoke-test.sh
+```
+
+CI (`.github/workflows/test.yml`) runs it on both `ubuntu-latest` and `macos-latest` on every
+push/PR to catch shell differences (e.g. GNU sed vs. BSD sed) that don't show up when only
+tested on one platform.
 
 ---
 

@@ -15,16 +15,17 @@ Do NOT add project-specific content here — use global.custom.instructions.md i
 
 Purpose of this file:
 - Provide project-wide operational context sourced from project-template.
-- Define verification commands (filled in during project init).
 - Rules in AGENTS.md always take precedence; do not duplicate them here.
 -->
 
 ## Verification Commands
 
-| Purpose | Command |
-| ------- | ------- |
-| Start dev server | `{{DEV_COMMAND}}` → `{{DEV_URL}}` |
-| Run tests | `{{TEST_COMMAND}}` |
-| Build | `{{BUILD_COMMAND}}` |
+Do not assume the dev/test/build commands. Before running any of them, check the actual
+manifest for this stack (`package.json` scripts, `Makefile`, `Cargo.toml`, `pyproject.toml`,
+etc.) and use what it actually defines — pinned commands go stale the moment the stack changes
+(package manager swap, monorepo restructure, script rename) and a stale command silently misleads
+verification. If genuinely ambiguous (e.g. multiple candidate scripts), ask once rather than
+guessing.
 
-The self-healing loop must use these commands for verification steps. If a command is not yet defined, state that explicitly rather than skipping verification.
+The self-healing loop must use the actual discovered commands for verification steps. If none
+can be found, state that explicitly rather than skipping verification.

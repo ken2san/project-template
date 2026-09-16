@@ -283,8 +283,48 @@ if [[ "$1" == "new" ]]; then
   # Plumbing needed for the tool itself to keep working inside the generated
   # project (`check`/`version` there) — not content, so not a module.
   cp "$TEMPLATE_DIR/VERSION" "$DEST/VERSION"
-  cp "$TEMPLATE_DIR/.gitignore" "$DEST/.gitignore"
   cp "$TEMPLATE_DIR/init-project.sh" "$DEST/init-project.sh"
+
+  # Written inline rather than `cp`'d from this repo's own .gitignore: when
+  # installed via `npx github:...`, pacote's git-fetcher unconditionally
+  # renames the top-level .gitignore to .npmignore (clobbering it even if
+  # one already exists), so the source file is simply gone by the time this
+  # script runs from an npx-managed checkout. Keep this in sync with the
+  # project-template repo's own .gitignore by hand.
+  cat > "$DEST/.gitignore" <<'GITIGNORE_EOF'
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Logs
+*.log
+logs/
+
+# sed -i.bak backups (init-project.sh removes these itself; ignored as a safety net)
+*.bak
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+GITIGNORE_EOF
+
   echo "  wrote: VERSION, .gitignore, init-project.sh"
 
   cd "$DEST"

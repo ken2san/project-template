@@ -1,7 +1,0 @@
-# Intentionally near-empty. Without this file, npm falls back to using
-# .gitignore's patterns as its own pack-time ignore rules for git-based
-# installs (e.g. `npx github:ken2san/project-template`) — which also
-# silently drops .gitignore itself from the installed package despite it
-# being listed in package.json's "files", breaking init-project.sh's
-# `cp .gitignore` step on every npx run. Having any .npmignore, even an
-# empty one, disables that fallback.

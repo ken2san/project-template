@@ -9,7 +9,11 @@ const args = process.argv.slice(2);
 
 const result = spawnSync('zsh', [scriptPath, ...args], {
   stdio: 'inherit',
-  env: process.env,
+  // PTPL_VIA_NPX tells init-project.sh it's running from an npm/npx-managed
+  // install (TEMPLATE_DIR is an ephemeral cache path, e.g.
+  // ~/.npm/_npx/<hash>/node_modules/...), not a local clone — so `new`
+  // without an explicit destination has no sensible default to fall back to.
+  env: { ...process.env, PTPL_VIA_NPX: '1' },
 });
 
 if (result.error) {

@@ -204,6 +204,16 @@ fi
 
 # --- New project mode: copy template first ---
 if [[ "$1" == "new" ]]; then
+  # Under npx/npm, TEMPLATE_DIR is an ephemeral cache path, not a real
+  # checkout — "default to the directory next to TEMPLATE_DIR" has no
+  # sensible meaning there, so require an explicit destination instead of
+  # silently writing into npm's cache (see PTPL_VIA_NPX in bin/create-project.js).
+  if [[ -n "$PTPL_VIA_NPX" && -z "$2" ]]; then
+    echo "Error: destination directory is required when running via npx." >&2
+    echo "Usage: npx github:ken2san/project-template new <dest>" >&2
+    exit 1
+  fi
+
   DEST_PARENT="${2:-$SANDBOX_DIR}"
   DEST_PARENT="${DEST_PARENT/#\~/$HOME}"
 

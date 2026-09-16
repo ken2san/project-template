@@ -10,7 +10,7 @@ _Last updated: {{DATE}}_
 <!--
 This file is owned by this project and never overwritten by template upgrades.
 Add all project-specific rules and exceptions here.
-Do NOT edit global.instructions.md — it is overwritten on every --apply run.
+Do NOT edit global.instructions.md — it is overwritten on every `apply` run.
 -->
 
 ## Project-Specific Overrides

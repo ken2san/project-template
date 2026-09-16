@@ -23,7 +23,7 @@ Stack: {{STACK}}. Entry: `{{ENTRY_POINT}}`. State: {{STATE_LOCATION}}.
 ## Agent Files
 
 Role-specific rules are in `.github/instructions/`:
-- `global.instructions.md` — template-managed global rules (overwritten by `--apply`)
+- `global.instructions.md` — template-managed global rules (overwritten by `apply`)
 - `global.custom.instructions.md` — project-owned overrides (never overwritten)
 - `frontend.instructions.md` — UI/component rules
 - `backend.instructions.md` — API/data rules

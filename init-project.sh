@@ -1,27 +1,50 @@
 #!/usr/bin/env zsh
 # init-project.sh — Initialize a new project from template
-# Usage (install globally):          ./init-project.sh --install   → adds `project-new` to /usr/local/bin
-# Usage (uninstall):                 project-new --uninstall       → removes the `project-new` symlink
-# Usage (new project, sibling):      project-new --new
-# Usage (new project, custom dir):   project-new --new ~/Desktop
-# Usage (apply to existing project): project-new --apply ~/path/to/project
-# Usage (check for unresolved):      project-new --check [dir]
+# Usage (install globally):          ./init-project.sh install    → adds `ptpl` to ~/.local/bin
+# Usage (uninstall):                 ptpl uninstall                → removes the `ptpl` symlink
+# Usage (new project, sibling):      ptpl new
+# Usage (new project, custom dir):   ptpl new ~/Desktop
+# Usage (apply to existing project): ptpl apply ~/path/to/project
+# Usage (check for unresolved):      ptpl check [dir]
 
 set -e
 
-TEMPLATE_DIR="$(cd "$(dirname "$0")" && pwd)"
+# ${0:A:h} (zsh-only) resolves symlinks before taking the dirname, unlike
+# `dirname "$0"` — needed because `install` runs this script via a symlink
+# (e.g. ~/.local/bin/ptpl), and a plain dirname would resolve to the
+# symlink's own directory instead of the real project-template checkout.
+TEMPLATE_DIR="${0:A:h}"
 SANDBOX_DIR="$(dirname "$TEMPLATE_DIR")"
 TEMPLATE_VERSION="$(cat "$TEMPLATE_DIR/VERSION" 2>/dev/null || echo 'unknown')"
 
-# --- Version flag ---
-if [[ "$1" == "--version" ]]; then
+# --- Unknown/missing command: print usage and exit, rather than silently
+# falling through into the shared "collect inputs" tail below with no
+# TARGET/DEST set (that used to happen for any typo'd or unrecognized flag).
+case "$1" in
+  new|apply|check|install|uninstall|version) ;;
+  *)
+    echo "Usage: ptpl <command> [args]" >&2
+    echo "" >&2
+    echo "Commands:" >&2
+    echo "  new [dest]         Create a new project from this template" >&2
+    echo "  apply [dir]        Apply/update agent files in an existing project" >&2
+    echo "  check [dir]        Scan for unresolved {{...}} placeholder tokens" >&2
+    echo "  install [path]     Install this script globally as 'ptpl' (default: ~/.local/bin/ptpl)" >&2
+    echo "  uninstall [path]   Remove the globally installed 'ptpl' symlink" >&2
+    echo "  version            Print the template version" >&2
+    exit 1
+    ;;
+esac
+
+# --- Version command ---
+if [[ "$1" == "version" ]]; then
   echo "project-template v${TEMPLATE_VERSION}"
   exit 0
 fi
 
-# --- Install flag: symlink this script for global access ---
-if [[ "$1" == "--install" ]]; then
-  LINK_PATH="${2:-$HOME/.local/bin/project-new}"
+# --- Install command: symlink this script for global access ---
+if [[ "$1" == "install" ]]; then
+  LINK_PATH="${2:-$HOME/.local/bin/ptpl}"
   LINK_PATH="${LINK_PATH/#\~/$HOME}"
   mkdir -p "$(dirname "$LINK_PATH")"
   ln -sf "$TEMPLATE_DIR/init-project.sh" "$LINK_PATH"
@@ -32,13 +55,13 @@ if [[ "$1" == "--install" ]]; then
     echo "Note: $(dirname $LINK_PATH) is not in your PATH."
     echo "Add this to ~/.zshrc:  export PATH=\"\$HOME/.local/bin:\$PATH\""
   fi
-  echo "\nUsage: project-new --new [dest]"
+  echo "\nUsage: ptpl new [dest]"
   exit 0
 fi
 
-# --- Uninstall flag: remove the project-new symlink ---
-if [[ "$1" == "--uninstall" ]]; then
-  LINK_PATH="${2:-$HOME/.local/bin/project-new}"
+# --- Uninstall command: remove the ptpl symlink ---
+if [[ "$1" == "uninstall" ]]; then
+  LINK_PATH="${2:-$HOME/.local/bin/ptpl}"
   LINK_PATH="${LINK_PATH/#\~/$HOME}"
 
   if [[ ! -e "$LINK_PATH" && ! -L "$LINK_PATH" ]]; then
@@ -47,7 +70,7 @@ if [[ "$1" == "--uninstall" ]]; then
   fi
 
   if [[ ! -L "$LINK_PATH" ]]; then
-    echo "Error: $LINK_PATH exists but is not a symlink (not something --install created). Refusing to delete it." >&2
+    echo "Error: $LINK_PATH exists but is not a symlink (not something 'install' created). Refusing to delete it." >&2
     exit 1
   fi
 
@@ -56,8 +79,8 @@ if [[ "$1" == "--uninstall" ]]; then
   exit 0
 fi
 
-# --- Check flag: read-only scan for unresolved {{...}} tokens ---
-if [[ "$1" == "--check" ]]; then
+# --- Check command: read-only scan for unresolved {{...}} tokens ---
+if [[ "$1" == "check" ]]; then
   CHECK_DIR="${2:-.}"
   CHECK_DIR="${CHECK_DIR/#\~/$HOME}"
   if [[ ! -d "$CHECK_DIR" ]]; then
@@ -84,7 +107,7 @@ fi
 echo "=== Copilot Agent Project Init (v${TEMPLATE_VERSION}) ===\n"
 
 # --- Apply mode: copy agent files only into an existing project ---
-if [[ "$1" == "--apply" ]]; then
+if [[ "$1" == "apply" ]]; then
   TARGET="${2:-.}"
   TARGET="${TARGET/#\~/$HOME}"
 
@@ -103,9 +126,9 @@ if [[ "$1" == "--apply" ]]; then
   # "core" tier — `base` is just the one module every preset always includes.
   # dest_rel_path() strips the "modules/<name>/" prefix to get that dest path.
   #
-  # Two categories of files exist for --apply:
+  # Two categories of files exist for `apply`:
   #
-  #   FORCE_FILES        — overwritten on every --apply run.
+  #   FORCE_FILES        — overwritten on every `apply` run.
   #                        Use for pure-template content with no project-specific data.
   #                        Template improvements are automatically propagated.
   #
@@ -116,12 +139,13 @@ if [[ "$1" == "--apply" ]]; then
   # Files always overwritten (pure template rules, no project-specific content)
   FORCE_FILES=(
     "modules/base/AGENTS.md"
+    "modules/base/CLAUDE.md"
     "modules/base/.github/instructions/global.instructions.md"
   )
 
   # Files copied only if not present (contain project-specific or placeholder content).
-  # --apply doesn't prompt for a project type, so it includes every module —
-  # unlike --new, an existing project's stack isn't being chosen here, only augmented.
+  # `apply` doesn't prompt for a project type, so it includes every module —
+  # unlike `new`, an existing project's stack isn't being chosen here, only augmented.
   SKIP_IF_EXISTS_FILES=(
     "modules/base/Decisions.md"
     "modules/base/HANDOFF.md"
@@ -179,7 +203,7 @@ if [[ "$1" == "--apply" ]]; then
 fi
 
 # --- New project mode: copy template first ---
-if [[ "$1" == "--new" ]]; then
+if [[ "$1" == "new" ]]; then
   DEST_PARENT="${2:-$SANDBOX_DIR}"
   DEST_PARENT="${DEST_PARENT/#\~/$HOME}"
 
@@ -247,7 +271,7 @@ if [[ "$1" == "--new" ]]; then
   done
 
   # Plumbing needed for the tool itself to keep working inside the generated
-  # project (--check/--version there) — not content, so not a module.
+  # project (`check`/`version` there) — not content, so not a module.
   cp "$TEMPLATE_DIR/VERSION" "$DEST/VERSION"
   cp "$TEMPLATE_DIR/.gitignore" "$DEST/.gitignore"
   cp "$TEMPLATE_DIR/init-project.sh" "$DEST/init-project.sh"
@@ -260,7 +284,7 @@ if [[ "$1" == "--new" ]]; then
 fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---
-# Derive default project name from slug (--new mode) or fall back to generic
+# Derive default project name from slug (`new` mode) or fall back to generic
 if [[ -n "$PROJECT_SLUG" ]]; then
   _default_name="$(echo "$PROJECT_SLUG" | sed 's/^project-//' | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')"
 else
@@ -317,7 +341,7 @@ find . \( -name "*.md" -o -name "settings.json" \) \
 done
 
 # --- Git init (new projects only) ---
-if [[ "$1" != "--apply" && ! -d ".git" ]]; then
+if [[ "$1" != "apply" && ! -d ".git" ]]; then
   echo "\n--- Initializing git repository ---"
   git init -q
   git add .
@@ -337,7 +361,7 @@ if [[ -z "$REMAINING" ]]; then
   echo "  ✓ No placeholders remaining."
 else
   echo "$REMAINING"
-  if [[ "$1" == "--apply" ]]; then
+  if [[ "$1" == "apply" ]]; then
     echo "\n  → Run 'Copilot: Run Prompt > apply' in VS Code to fill these with AI-generated content."
   else
     echo "\n  → Run 'Copilot: Run Prompt > init' in VS Code to fill these with AI-generated content."
@@ -345,7 +369,7 @@ else
 fi
 
 echo "\n=== Done. ==="
-if [[ "$1" == "--new" ]]; then
+if [[ "$1" == "new" ]]; then
   echo "Project created at: $(pwd)"
   echo "\nNext steps:"
   echo "  1. cd $DEST"

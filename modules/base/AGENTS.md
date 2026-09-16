@@ -99,6 +99,9 @@ Before marking any task complete:
 
 ## Structure
 
+- This file is the single source of truth for agent behavior. Codex CLI reads it directly.
+  Claude Code only auto-loads `CLAUDE.md`, so `CLAUDE.md` here is a one-line `@AGENTS.md`
+  import — do not duplicate rules into it.
 - Project context and workspace rules: `.github/copilot-instructions.md`
 - Role-specific instructions: `.github/instructions/*.instructions.md`
   Copilot applies these automatically by path (`applyTo`). Other agents (Claude Code, Codex, etc.)

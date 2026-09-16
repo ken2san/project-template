@@ -2,7 +2,7 @@
 
 New project bootstrap template for Copilot Agent projects.
 
-> **Template version:** see `VERSION` file. Check current version with `./init-project.sh --version`.
+> **Template version:** see `VERSION` file. Check current version with `./init-project.sh version`.
 
 ---
 
@@ -17,8 +17,8 @@ optional modules: a project type preset includes some of them by default, and "c
 (see [Supported project types](#supported-project-types)) lets you pick any combination — the
 whole point is Unix-style composition: each module is a small, simple, self-contained piece, and
 combining them is how you scale from a one-off script up to a large multi-surface project. Adding
-a new module later means adding a new `modules/<name>/` directory — both `--new`'s custom mode and
-`--apply` discover it automatically, nothing else in the mechanism changes. Everything outside
+a new module later means adding a new `modules/<name>/` directory — both `new`'s custom mode and
+`apply` discover it automatically, nothing else in the mechanism changes. Everything outside
 `modules/` is either about maintaining project-template itself
 (`README.md`, `CHANGELOG.md`, `test/`, `.github/workflows/`) or plumbing the bootstrap script
 needs at runtime (`VERSION`, `.gitignore`, `init-project.sh` itself — copied as-is, not through the
@@ -32,7 +32,7 @@ project-template/
 ├── VERSION                            ← Template semantic version (plumbing, copied as-is)
 ├── .gitignore                         ← Plumbing, copied as-is into generated projects
 ├── test/
-│   └── smoke-test.sh                  ← End-to-end test for --new/--apply (see Testing section)
+│   └── smoke-test.sh                  ← End-to-end test for new/apply (see Testing section)
 ├── package.json                       ← npx entry point
 ├── bin/
 │   └── create-project.js             ← Node.js wrapper for npx
@@ -42,6 +42,7 @@ project-template/
 └── modules/
     ├── base/                          ← Always included, every project type
     │   ├── AGENTS.md
+    │   ├── CLAUDE.md                  ← `@AGENTS.md` import, so Claude Code picks up AGENTS.md too
     │   ├── Roadmap.md
     │   ├── Protocol.md
     │   ├── Decisions.md
@@ -60,11 +61,11 @@ project-template/
     │       │   ├── feature_request.md
     │       │   └── config.yml
     │       ├── instructions/
-    │       │   ├── global.instructions.md         ← Template-managed (overwritten by --apply)
+    │       │   ├── global.instructions.md         ← Template-managed (overwritten by apply)
     │       │   └── global.custom.instructions.md  ← Project-owned (never overwritten)
     │       └── prompts/
     │           ├── init.prompt.md     ← AI content generation prompt
-    │           └── apply.prompt.md    ← Placeholder fill prompt for --apply mode
+    │           └── apply.prompt.md    ← Placeholder fill prompt for apply mode
     ├── frontend/.github/instructions/frontend.instructions.md   ← Included by webapp, game
     ├── backend/.github/instructions/backend.instructions.md     ← Included by webapp, api
     ├── infra/.github/instructions/infra.instructions.md         ← Included by webapp, game, api
@@ -94,8 +95,11 @@ project-template/
 - Claude Code (CLI or IDE extension)
 - Codex CLI (`codex`)
 
-`AGENTS.md` is the single source of truth for agent behavior and is read automatically by all
-four. Copilot additionally auto-applies `.github/copilot-instructions.md` and the path-scoped
+`AGENTS.md` is the single source of truth for agent behavior. Codex CLI and Copilot CLI read it
+automatically by convention. Claude Code does not — it only auto-loads `CLAUDE.md` — so the
+template ships a one-line `CLAUDE.md` (`@AGENTS.md`) that imports `AGENTS.md` via Claude Code's
+own import syntax, keeping the rules defined in exactly one place. Copilot additionally
+auto-applies `.github/copilot-instructions.md` and the path-scoped
 `.github/instructions/*.instructions.md` files by itself; other agents don't auto-apply path-scoped
 files, so AGENTS.md tells them to read the relevant one before frontend/backend/infra work.
 
@@ -104,7 +108,7 @@ files, so AGENTS.md tells them to read the relevant one before frontend/backend/
 **Option A — New project via npx (recommended, no clone required):**
 
 ```bash
-npx github:ken2san/project-template --new ~/path/to/parent
+npx github:ken2san/project-template new ~/path/to/parent
 ```
 
 Requires Node.js 18+. No install step — runs directly from GitHub.
@@ -114,34 +118,34 @@ Requires Node.js 18+. No install step — runs directly from GitHub.
 ```
 git clone https://github.com/ken2san/project-template
 cd project-template
-./init-project.sh --new
+./init-project.sh new
 ```
 
 **Global install (optional, Mac/Linux):**
 
 ```bash
-# Run once to install the project-new command globally
-./init-project.sh --install
+# Run once to install the `ptpl` command globally
+./init-project.sh install
 # Add to ~/.zshrc if prompted:
 # export PATH="$HOME/.local/bin:$PATH"
 
 # Then from anywhere:
-project-new --new ~/path/to/parent
+ptpl new ~/path/to/parent
 ```
 
 **Uninstall:**
 
 ```bash
-project-new --uninstall
+ptpl uninstall
 ```
 
-Removes the `project-new` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
+Removes the `ptpl` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
 
 Prompts for project folder name, project type, name, description, stack, phase boundary, and dev/test commands. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`.
 
 ### Step 2 — AI content generation (Copilot Agent)
 
-When `--new` completes, the script prints a checklist and **automatically copies a bootstrap prompt to your clipboard** (`pbcopy` on macOS, `clip.exe` on WSL2, `xclip`/`xsel` on Linux). If none of those tools are available, the prompt is printed to the terminal instead.
+When `new` completes, the script prints a checklist and **automatically copies a bootstrap prompt to your clipboard** (`pbcopy` on macOS, `clip.exe` on WSL2, `xclip`/`xsel` on Linux). If none of those tools are available, the prompt is printed to the terminal instead.
 
 Open the new project in VS Code, paste the clipboard content into Copilot Chat, then also run:
 
@@ -166,13 +170,13 @@ If you use Codex CLI, start `codex` in the project root and ask it to execute th
 **Option B — Apply to existing project:**
 
 ```bash
-npx github:ken2san/project-template --apply ~/path/to/existing-project
+npx github:ken2san/project-template apply ~/path/to/existing-project
 ```
 
 Or from local clone:
 
 ```bash
-./init-project.sh --apply ~/path/to/existing-project
+./init-project.sh apply ~/path/to/existing-project
 ```
 
 Copies only agent files into an existing project. Skips files that already exist. Then run in VS Code:
@@ -270,9 +274,9 @@ automatically as modules are added — no script changes needed.
 
 ## Testing
 
-`test/smoke-test.sh` runs `init-project.sh --new` and `--apply` end-to-end against a temp
+`test/smoke-test.sh` runs `init-project.sh new` and `apply` end-to-end against a temp
 directory and asserts on regressions found during template review (e.g. generated projects
-must not inherit project-template's own README/CHANGELOG, `--apply` must not overwrite an
+must not inherit project-template's own README/CHANGELOG, `apply` must not overwrite an
 existing `.vscode/settings.json`, the placeholder-fill step must not leave `.bak` files behind).
 
 ```bash
@@ -292,9 +296,9 @@ This template is versioned with Git and semantic versioning (`VERSION` file).
 **Check current version:**
 
 ```bash
-npx github:ken2san/project-template --version
+npx github:ken2san/project-template version
 # or from local clone:
-./init-project.sh --version
+./init-project.sh version
 ```
 
 **Upgrade the template** (add new features, fix agent rules, etc.):
@@ -318,4 +322,4 @@ To see which version a project was bootstrapped from:
 cat .template-version
 ```
 
-> Note: `.template-version` in generated projects is informational only — there is no automatic upgrade mechanism. To pull in new agent rules, use `--apply` mode.
+> Note: `.template-version` in generated projects is informational only — there is no automatic upgrade mechanism. To pull in new agent rules, use `apply` mode.

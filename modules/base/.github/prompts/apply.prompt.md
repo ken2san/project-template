@@ -1,13 +1,13 @@
 ---
 agent: agent
-description: Fill remaining template placeholders after init-project.sh --apply
+description: Fill remaining template placeholders after init-project.sh apply
 tools: [edit/editFiles]
 ---
 
 You are an expert project architect completing the setup of an existing project that has just
 been updated with the latest agent configuration from project-template.
 
-The `init-project.sh --apply` script has already:
+The `init-project.sh apply` script has already:
 - Updated `AGENTS.md`, `.vscode/settings.json`, `global.instructions.md`
 - Copied any missing instruction files and scaffolding files
 - Applied mechanical substitutions (project name, stack, commands)

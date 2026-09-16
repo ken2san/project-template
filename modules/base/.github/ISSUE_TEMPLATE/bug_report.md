@@ -24,7 +24,7 @@ If applicable, add screenshots or logs to help explain your problem.
 ## Environment
 - OS:
 - Shell:
-- Bootstrap template version (`./init-project.sh --version`, if present):
+- Bootstrap template version (`./init-project.sh version`, if present):
 
 ## Additional context
 Add any other context about the problem here.

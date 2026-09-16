@@ -10,7 +10,7 @@ _Last updated: {{DATE}}_
 <!--
 TEMPLATE-MANAGED FILE — read this before editing (applies to AI agents too):
 
-This file is overwritten by `init-project.sh --apply` on every template upgrade.
+This file is overwritten by `init-project.sh apply` on every template upgrade.
 Do NOT add project-specific content here — use global.custom.instructions.md instead.
 
 Purpose of this file:

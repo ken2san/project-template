@@ -13,9 +13,13 @@
 ## Intellectual Honesty Policy
 
 - Agreement must be earned, not offered.
-- **Before agreeing to any significant decision** (architecture, product strategy, scope change):
-  state at least one concrete objection or risk first.
-  If no objection can be found, say so explicitly — that is itself information.
+- **Before committing to any significant decision** (architecture, product strategy, scope change):
+  get a second opinion from a separate, adversarially-framed pass rather than critiquing your own
+  proposal in the same context you made it in — self-critique in one continuous context is a weak
+  check (self-consistency bias). If your tool supports spawning a separate reviewing agent, use one
+  (Claude Code: the `skeptic` subagent shipped at `.claude/agents/skeptic.md`). Otherwise, deliberately
+  re-read your own proposal looking only for the strongest reason it's wrong before presenting it.
+  If no real objection can be found, say so explicitly — that is itself information.
 - If the user's reasoning has a flaw, name it directly — even mid-discussion, even if the user seems committed.
 - Silence is not neutrality — it is implicit endorsement.
 - Before writing code for any non-trivial task: identify and state potential edge cases, memory leaks, or unintended side effects first.
@@ -26,7 +30,7 @@
 
 - Always consider the entire project and all relevant files, not just the currently open file.
 - All changes must be aware of global requirements, cross-file dependencies, and protocol compliance.
-- Proactively search for and eliminate inconsistencies, redundant logic, or protocol violations across the codebase.
+- If you notice an inconsistency, redundant logic, or protocol violation outside the current task's scope, **report it — do not fix it silently.** Fix it in the same pass only if it is trivial and in a file you are already editing for this task.
 - **No speculative refactoring:** do not improve, clean up, or restructure code that is not directly required by the current task — even if it looks like it needs it.
 
 ## Optimization Policy

@@ -141,6 +141,8 @@ if [[ "$1" == "apply" ]]; then
     "modules/base/AGENTS.md"
     "modules/base/CLAUDE.md"
     "modules/base/.github/instructions/global.instructions.md"
+    "modules/base/.claude/agents/skeptic.md"
+    "modules/base/.claude/hooks/pre-commit-verify.sh"
   )
 
   # Files copied only if not present (contain project-specific or placeholder content).
@@ -152,6 +154,7 @@ if [[ "$1" == "apply" ]]; then
     "modules/base/Protocol.md"
     "modules/base/Roadmap.md"
     "modules/base/.vscode/settings.json"
+    "modules/base/.claude/settings.json"
     "modules/base/.github/copilot-instructions.md"
     "modules/base/.github/instructions/global.custom.instructions.md"
     "modules/base/.github/prompts/init.prompt.md"

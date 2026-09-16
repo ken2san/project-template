@@ -50,9 +50,13 @@ project-template/
     │   ├── README.md                  ← Becomes the new project's README.md
     │   ├── CHANGELOG.md               ← Becomes the new project's CHANGELOG.md
     │   ├── .vscode/settings.json
-    │   ├── .claude/commands/template/
-    │   │   ├── init.md                ← Claude Code /template:init → .github/prompts/init.prompt.md
-    │   │   └── apply.md               ← Claude Code /template:apply → .github/prompts/apply.prompt.md
+    │   ├── .claude/
+    │   │   ├── commands/template/
+    │   │   │   ├── init.md            ← Claude Code /template:init → .github/prompts/init.prompt.md
+    │   │   │   └── apply.md           ← Claude Code /template:apply → .github/prompts/apply.prompt.md
+    │   │   ├── agents/skeptic.md      ← Adversarial-review subagent (see Intellectual Honesty Policy in AGENTS.md)
+    │   │   ├── hooks/pre-commit-verify.sh  ← Blocks `git commit` if the detected test command fails
+    │   │   └── settings.json          ← Registers the pre-commit-verify hook (project-owned once present)
     │   └── .github/
     │       ├── copilot-instructions.md
     │       ├── PULL_REQUEST_TEMPLATE.md

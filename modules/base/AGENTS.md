@@ -31,7 +31,7 @@
 - Always consider the entire project and all relevant files, not just the currently open file.
 - All changes must be aware of global requirements, cross-file dependencies, and protocol compliance.
 - If you notice an inconsistency, redundant logic, or protocol violation outside the current task's scope, **report it — do not fix it silently.** Fix it in the same pass only if it is trivial and in a file you are already editing for this task.
-- **No speculative refactoring:** do not improve, clean up, or restructure code that is not directly required by the current task — even if it looks like it needs it.
+- **No speculative refactoring:** do not improve, clean up, or restructure code that is not directly required by the current task — even if it looks like it needs it. This means don't touch unrelated code the human never asked about — it does not mean treat your own recent work as untouchable. The task's scope is the current, evolving understanding of the goal, not the literal wording of the first request: revising, reverting, or removing something you added earlier in the same task, because the goal was clarified or changed direction, is normal iteration, not speculative refactoring.
 
 ## Optimization Policy
 

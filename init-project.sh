@@ -353,9 +353,6 @@ PROJECT_DESCRIPTION="${PROJECT_DESCRIPTION:-TBD}"
 read "STACK?Tech stack [React 18, Vite, TailwindCSS]: "
 STACK="${STACK:-React 18, Vite, TailwindCSS}"
 
-read "PHASE_MAX_PLUS_ONE?First phase to block [3]: "
-PHASE_MAX_PLUS_ONE="${PHASE_MAX_PLUS_ONE:-3}"
-
 read "DEV_COMMAND?Dev server command [npm run dev]: "
 DEV_COMMAND="${DEV_COMMAND:-npm run dev}"
 
@@ -384,7 +381,6 @@ find . \( -name "*.md" -o -name "settings.json" \) \
     -e "s|{{DATE}}|${DATE}|g" \
     -e "s|{{PROJECT_DESCRIPTION}}|${PROJECT_DESCRIPTION}|g" \
     -e "s|{{STACK}}|${STACK}|g" \
-    -e "s|{{PHASE_MAX_PLUS_ONE}}|${PHASE_MAX_PLUS_ONE}|g" \
     -e "s|{{DEV_COMMAND}}|${DEV_COMMAND}|g" \
     -e "s|{{DEV_URL}}|${DEV_URL}|g" \
     -e "s|{{TEST_COMMAND}}|${TEST_COMMAND}|g" \

@@ -49,6 +49,10 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 - Write 2–3 concrete phases with realistic names, goals, and 3–5 scope items each
 - Phase 1 should be the smallest shippable slice (not "setup")
 - Phase scope must reflect the actual stack and domain
+- `{{PHASE_MAX_PLUS_ONE}}` (in `.github/copilot-instructions.md` and `HANDOFF.md`) — set this to
+  the number of the first phase you wrote that hasn't started yet (usually `2`, or `1` if even
+  Phase 1 is still just planned). This can't be decided until the phases above are written, which
+  is why it isn't filled by the bash script.
 
 ### `Protocol.md`
 - Write an overview specific to the domain (not generic)

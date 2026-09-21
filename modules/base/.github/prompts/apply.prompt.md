@@ -63,6 +63,10 @@ For each file containing `{{...}}`:
 - `{{CONSTRAINT_*}}` — any active constraints not already listed
 - `{{NEXT_TASK}}` — the single most important next action
 
+### `.github/copilot-instructions.md` (only if freshly copied — has `{{PHASE_MAX_PLUS_ONE}}`)
+- `{{PHASE_MAX_PLUS_ONE}}` — the number of the current/next phase not yet started, based on
+  `Roadmap.md`'s actual phases. Same value also fills `{{PHASE_MAX_PLUS_ONE}}` in `HANDOFF.md`.
+
 ### `Decisions.md`
 - Replace the example ADR block with 2–3 **real** architectural decisions already reflected in the codebase
 - Format: **Decision**, **Context**, **Alternatives considered**, **Consequences**

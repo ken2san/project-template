@@ -17,6 +17,27 @@ TEMPLATE_DIR="${0:A:h}"
 SANDBOX_DIR="$(dirname "$TEMPLATE_DIR")"
 TEMPLATE_VERSION="$(cat "$TEMPLATE_DIR/VERSION" 2>/dev/null || echo 'unknown')"
 
+# Shared by `new` (called early, before project-type/module selection — see
+# note at the call site for why) and `apply` (called from the "Collect
+# inputs" tail, since apply has no earlier point to call it from).
+collect_identity_inputs() {
+  # Derive default project name from slug (`new` mode) or fall back to generic
+  if [[ -n "$PROJECT_SLUG" ]]; then
+    _default_name="$(echo "$PROJECT_SLUG" | sed 's/^project-//' | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')"
+  else
+    _default_name="MyApp"
+  fi
+
+  read "PROJECT_NAME?Project name [${_default_name}]: "
+  PROJECT_NAME="${PROJECT_NAME:-$_default_name}"
+
+  read "PROJECT_DESCRIPTION?One-line description [TBD]: "
+  PROJECT_DESCRIPTION="${PROJECT_DESCRIPTION:-TBD}"
+
+  read "STACK?Tech stack [React 18, Vite, TailwindCSS]: "
+  STACK="${STACK:-React 18, Vite, TailwindCSS}"
+}
+
 # --- Unknown/missing command: print usage and exit, rather than silently
 # falling through into the shared "collect inputs" tail below with no
 # TARGET/DEST set (that used to happen for any typo'd or unrecognized flag).
@@ -235,6 +256,12 @@ if [[ "$1" == "new" ]]; then
     exit 1
   fi
 
+  # Asked here — before project type/module selection — rather than down in
+  # the shared "Collect inputs" tail with the rest: knowing the stack first
+  # reads more naturally than picking a project type blind, then only
+  # learning the stack afterward.
+  collect_identity_inputs
+
   mkdir -p "$DEST"
 
   # Project type is really just a preset list of modules. `base` (AGENTS.md,
@@ -337,21 +364,11 @@ GITIGNORE_EOF
 fi
 
 # --- Collect inputs (essential only — edit other files directly after) ---
-# Derive default project name from slug (`new` mode) or fall back to generic
-if [[ -n "$PROJECT_SLUG" ]]; then
-  _default_name="$(echo "$PROJECT_SLUG" | sed 's/^project-//' | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')"
-else
-  _default_name="MyApp"
+# `new` already asked name/description/stack earlier (before project-type
+# selection); `apply` has no earlier point to ask from, so it asks here.
+if [[ "$1" != "new" ]]; then
+  collect_identity_inputs
 fi
-
-read "PROJECT_NAME?Project name [${_default_name}]: "
-PROJECT_NAME="${PROJECT_NAME:-$_default_name}"
-
-read "PROJECT_DESCRIPTION?One-line description [TBD]: "
-PROJECT_DESCRIPTION="${PROJECT_DESCRIPTION:-TBD}"
-
-read "STACK?Tech stack [React 18, Vite, TailwindCSS]: "
-STACK="${STACK:-React 18, Vite, TailwindCSS}"
 
 read "DEV_COMMAND?Dev server command [npm run dev]: "
 DEV_COMMAND="${DEV_COMMAND:-npm run dev}"

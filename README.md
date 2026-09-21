@@ -145,7 +145,7 @@ ptpl uninstall
 
 Removes the `ptpl` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
 
-Prompts for project folder name, project type, name, description, stack, and dev/test/build commands. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `Roadmap.md`'s actual phases exist, so Step 2 (AI content generation) fills it in once those are written.
+Prompts for project folder name, name, description, stack, project type, and dev/test/build commands — in that order, so the stack is already known by the time you're picking a project type instead of the other way around. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `Roadmap.md`'s actual phases exist, so Step 2 (AI content generation) fills it in once those are written.
 
 ### Step 2 — AI content generation (Copilot Agent)
 

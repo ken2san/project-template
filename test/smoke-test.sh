@@ -27,7 +27,7 @@ cd "$TEMPLATE_DIR"
 echo "=== new: produces a working, project-specific scaffold ==="
 
 NEW_LOG="$WORKDIR/new.log"
-printf "smoketest\n1\nSmoke Test\nA smoke-tested project\nReact 18, Vite\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+printf "smoketest\nSmoke Test\nA smoke-tested project\nReact 18, Vite\n1\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
   | zsh ./init-project.sh new "$WORKDIR" >"$NEW_LOG" 2>&1 \
   || { cat "$NEW_LOG"; fail "new exited non-zero (see log above — this is how the BSD-only 'sed -i ''' regression showed up on Linux)"; }
 
@@ -74,7 +74,7 @@ echo "=== new: module selection matches project type (base is always included) =
 pass "webapp (type 1) included frontend + backend + infra"
 
 GAME_LOG="$WORKDIR/game.log"
-printf "gametest\n2\nGame Test\nA smoke-tested game\nUnity\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+printf "gametest\nGame Test\nA smoke-tested game\nUnity\n2\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
   | zsh ./init-project.sh new "$WORKDIR" >"$GAME_LOG" 2>&1 \
   || { cat "$GAME_LOG"; fail "new (game) exited non-zero"; }
 GAME_PROJECT="$WORKDIR/gametest"
@@ -85,7 +85,7 @@ GAME_PROJECT="$WORKDIR/gametest"
 pass "game (type 2) included frontend + infra + base, excluded backend"
 
 API_LOG="$WORKDIR/api.log"
-printf "apitest\n3\nAPI Test\nA smoke-tested api\nFastAPI\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+printf "apitest\nAPI Test\nA smoke-tested api\nFastAPI\n3\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
   | zsh ./init-project.sh new "$WORKDIR" >"$API_LOG" 2>&1 \
   || { cat "$API_LOG"; fail "new (api) exited non-zero"; }
 API_PROJECT="$WORKDIR/apitest"
@@ -101,7 +101,7 @@ echo "=== new: custom mode reaches a module no preset includes ==="
 # to prove `testing` — a module no preset references — is reachable, and that
 # declining the others actually excludes them (composition works both ways).
 CUSTOM_LOG="$WORKDIR/custom.log"
-printf "customtest\n4\nn\nn\nn\ny\nCustom Test\nA smoke-tested custom project\nNode\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+printf "customtest\nCustom Test\nA smoke-tested custom project\nNode\n4\nn\nn\nn\ny\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
   | zsh ./init-project.sh new "$WORKDIR" >"$CUSTOM_LOG" 2>&1 \
   || { cat "$CUSTOM_LOG"; fail "new (custom) exited non-zero"; }
 CUSTOM_PROJECT="$WORKDIR/customtest"
@@ -149,7 +149,7 @@ pass "install created the symlink"
 # checkout, not just take dirname() of the symlink's own path (that bug
 # made every install'd invocation fail with "no matches found: .../modules/*/").
 SYMLINK_LOG="$WORKDIR/symlink-new.log"
-printf "symlinktest\n1\nSymlink Test\ndesc\nNode\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
+printf "symlinktest\nSymlink Test\ndesc\nNode\n1\nnpm run dev\nhttp://localhost:5173\nnpm test\nnpm run build\n" \
   | zsh "$LINK_PATH" new "$WORKDIR" >"$SYMLINK_LOG" 2>&1 \
   || { cat "$SYMLINK_LOG"; fail "new via the installed symlink exited non-zero"; }
 [[ -f "$WORKDIR/symlinktest/AGENTS.md" ]] || fail "new via the installed symlink did not produce AGENTS.md"

@@ -173,7 +173,6 @@ if [[ "$1" == "apply" ]]; then
     "modules/base/Decisions.md"
     "modules/base/HANDOFF.md"
     "modules/base/Protocol.md"
-    "modules/base/Roadmap.md"
     "modules/base/.vscode/settings.json"
     "modules/base/.claude/settings.json"
     "modules/base/.github/copilot-instructions.md"

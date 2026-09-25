@@ -45,17 +45,15 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 
 ## Step 4 — Generate and write content
 
-### `Roadmap.md`
-- Write 2–3 concrete phases with realistic names, goals, and 3–5 scope items each
-- Phase 1 should be the smallest shippable slice (not "setup")
-- Phase scope must reflect the actual stack and domain
-- `{{PHASE_MAX_PLUS_ONE}}` (in `.github/copilot-instructions.md` and `HANDOFF.md`) — set this to
-  the number of the first phase you wrote that hasn't started yet (usually `2`, or `1` if even
-  Phase 1 is still just planned). This can't be decided until the phases above are written, which
-  is why it isn't filled by the bash script.
-
 ### `Protocol.md`
 - Write an overview specific to the domain (not generic)
+- Roadmap section: write 2–3 concrete phases with realistic names, goals, and 3–5 scope items each
+  - Phase 1 should be the smallest shippable slice (not "setup")
+  - Phase scope must reflect the actual stack and domain
+  - `{{PHASE_MAX_PLUS_ONE}}` (in `.github/copilot-instructions.md` and `HANDOFF.md`) — set this to
+    the number of the first phase you wrote that hasn't started yet (usually `2`, or `1` if even
+    Phase 1 is still just planned). This can't be decided until the phases above are written, which
+    is why it isn't filled by the bash script.
 - Write 3–5 core principles that are actually relevant (e.g. "All AI responses must be validated against source data before display")
 - Include a data model sketch if applicable
 - Include a workflow description
@@ -67,9 +65,9 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 
 ### `HANDOFF.md`
 - Fill in current state: Phase 1 not started, no sessions yet
-- `{{CURRENT_PHASE}}` = `1` — this is the only place that tracks current phase; `Roadmap.md`
-  is the static plan and is never updated with live status, so keep this field (not Roadmap.md)
-  current every session
+- `{{CURRENT_PHASE}}` = `1` — this is the only place that tracks current phase; `Protocol.md`'s
+  Roadmap section is the static plan and is never updated with live status, so keep this field
+  (not Protocol.md) current every session
 - `{{NEXT_TASK}}` = the single most important first task to start
 
 ### `.github/copilot-instructions.md`

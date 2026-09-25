@@ -11,7 +11,7 @@ New project bootstrap template for Copilot Agent projects.
 Shipped content lives entirely under `modules/<name>/`, each mirroring the file tree it produces
 inside a generated project (e.g. `modules/base/AGENTS.md` → `AGENTS.md`). There is no separate
 "core" tier — `base` is simply the one module every project type always includes, because a
-project generated without it (no `AGENTS.md`, no `Roadmap.md`/`Protocol.md`/`Decisions.md`, no
+project generated without it (no `AGENTS.md`, no `Protocol.md`/`Decisions.md`, no
 README) wouldn't have a reason to use this template. `frontend`/`backend`/`infra`/`testing` are
 optional modules: a project type preset includes some of them by default, and "custom" mode
 (see [Supported project types](#supported-project-types)) lets you pick any combination — the
@@ -43,8 +43,7 @@ project-template/
     ├── base/                          ← Always included, every project type
     │   ├── AGENTS.md
     │   ├── CLAUDE.md                  ← `@AGENTS.md` import, so Claude Code picks up AGENTS.md too
-    │   ├── Roadmap.md
-    │   ├── Protocol.md
+    │   ├── Protocol.md                 ← Roadmap (phases/scope), architecture, operating principles
     │   ├── Decisions.md
     │   ├── HANDOFF.md
     │   ├── README.md                  ← Becomes the new project's README.md
@@ -145,7 +144,7 @@ ptpl uninstall
 
 Removes the `ptpl` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
 
-Prompts for project folder name, name, description, stack, project type, and dev/test/build commands — in that order, so the stack is already known by the time you're picking a project type instead of the other way around. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `Roadmap.md`'s actual phases exist, so Step 2 (AI content generation) fills it in once those are written.
+Prompts for project folder name, name, description, stack, project type, and dev/test/build commands — in that order, so the stack is already known by the time you're picking a project type instead of the other way around. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `Protocol.md`'s Roadmap section has actual phases, so Step 2 (AI content generation) fills it in once those are written.
 
 ### Step 2 — AI content generation (Copilot Agent)
 
@@ -157,7 +156,7 @@ Open the new project in VS Code, paste the clipboard content into Copilot Chat, 
 > Copilot: Run Prompt > init
 ```
 
-The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Roadmap.md`, `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
+The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
 
 > The prompt file is at `.github/prompts/init.prompt.md`.
 

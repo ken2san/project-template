@@ -58,9 +58,9 @@ For each file containing `{{...}}`:
 ### `HANDOFF.md`
 - `{{LIVE_URL}}` — deployment URL, or "not yet deployed"
 - `{{CURRENT_PHASE}}` — the current phase number, inferred from what's actually implemented
-  (check git history and code state) cross-referenced against `Roadmap.md`'s phase list.
-  `Roadmap.md` itself is the static plan and doesn't track live status — `HANDOFF.md` is the
-  only place that does, so this is the value to keep current every session, not `Roadmap.md`.
+  (check git history and code state) cross-referenced against `Protocol.md`'s Roadmap section.
+  `Protocol.md` itself is the static plan and doesn't track live status — `HANDOFF.md` is the
+  only place that does, so this is the value to keep current every session, not `Protocol.md`.
 - `{{LAST_SESSION_*}}` — what was actually done in the most recent work session (infer from git log or recent file dates if unclear)
 - `{{CURRENT_STATE_*}}` — factual description of what is working now
 - `{{CONSTRAINT_*}}` — any active constraints not already listed
@@ -68,7 +68,7 @@ For each file containing `{{...}}`:
 
 ### `.github/copilot-instructions.md` (only if freshly copied — has `{{PHASE_MAX_PLUS_ONE}}`)
 - `{{PHASE_MAX_PLUS_ONE}}` — the number of the current/next phase not yet started, based on
-  `Roadmap.md`'s actual phases. Same value also fills `{{PHASE_MAX_PLUS_ONE}}` in `HANDOFF.md`.
+  `Protocol.md`'s Roadmap section. Same value also fills `{{PHASE_MAX_PLUS_ONE}}` in `HANDOFF.md`.
 
 ### `Decisions.md`
 - Replace the example ADR block with 2–3 **real** architectural decisions already reflected in the codebase
@@ -97,5 +97,5 @@ If placeholders remain, either fill them or mark them as intentionally deferred 
 
 - Do **not** modify `AGENTS.md` — it is template-managed
 - Do **not** modify `global.instructions.md` — it is template-managed
-- Do **not** regenerate `Roadmap.md`, `Protocol.md`, or any file that already has real content
+- Do **not** regenerate `Protocol.md` or any file that already has real content
 - All generated content must be in English

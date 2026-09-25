@@ -14,7 +14,7 @@ Stack: {{STACK}}. Live: {{LIVE_URL}}
 
 ## Current Phase
 
-Phase {{CURRENT_PHASE}} — see `Roadmap.md` for full scope and open items.
+Phase {{CURRENT_PHASE}} — see `Protocol.md` for full scope and open items.
 
 ## What Was Done Last Session
 
@@ -39,6 +39,5 @@ Phase {{CURRENT_PHASE}} — see `Roadmap.md` for full scope and open items.
 ## Key Files to Read First
 
 - `AGENTS.md` — agent behavior rules
-- `Roadmap.md` — current phase and open items
-- `Protocol.md` — project operating rules
+- `Protocol.md` — roadmap (phases/scope), architecture, and operating principles
 - `Decisions.md` — architectural decisions (do not reverse without instruction)

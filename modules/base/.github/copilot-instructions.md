@@ -11,8 +11,8 @@ Stack: {{STACK}}. Entry: `{{ENTRY_POINT}}`. State: {{STATE_LOCATION}}.
 
 ## Before Any Task
 
-- Read `Roadmap.md` to understand current phase, target user, and scope boundaries.
-- Do not implement Phase {{PHASE_MAX_PLUS_ONE}} or later features (see `Roadmap.md`) without explicit user instruction.
+- Read `Protocol.md` to understand the roadmap, scope boundaries, and how the project operates.
+- Do not implement Phase {{PHASE_MAX_PLUS_ONE}} or later features (see `Protocol.md`) without explicit user instruction.
 
 ## Project-Specific Code Rules
 
@@ -33,4 +33,4 @@ Role-specific rules are in `.github/instructions/`:
 
 - `Decisions.md` — architectural decisions; do not reverse without explicit instruction
 - `HANDOFF.md` — AI session handoff context; update before ending a session
-- `Protocol.md` — project operating rules; update if core workflow changes
+- `Protocol.md` — roadmap, architecture, and operating principles; update if core workflow changes

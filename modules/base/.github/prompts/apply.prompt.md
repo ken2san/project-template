@@ -57,7 +57,10 @@ For each file containing `{{...}}`:
 
 ### `HANDOFF.md`
 - `{{LIVE_URL}}` — deployment URL, or "not yet deployed"
-- `{{CURRENT_PHASE}}` — current phase name/number from the roadmap file
+- `{{CURRENT_PHASE}}` — the current phase number, inferred from what's actually implemented
+  (check git history and code state) cross-referenced against `Roadmap.md`'s phase list.
+  `Roadmap.md` itself is the static plan and doesn't track live status — `HANDOFF.md` is the
+  only place that does, so this is the value to keep current every session, not `Roadmap.md`.
 - `{{LAST_SESSION_*}}` — what was actually done in the most recent work session (infer from git log or recent file dates if unclear)
 - `{{CURRENT_STATE_*}}` — factual description of what is working now
 - `{{CONSTRAINT_*}}` — any active constraints not already listed

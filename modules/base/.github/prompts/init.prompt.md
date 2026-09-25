@@ -67,6 +67,9 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
 
 ### `HANDOFF.md`
 - Fill in current state: Phase 1 not started, no sessions yet
+- `{{CURRENT_PHASE}}` = `1` — this is the only place that tracks current phase; `Roadmap.md`
+  is the static plan and is never updated with live status, so keep this field (not Roadmap.md)
+  current every session
 - `{{NEXT_TASK}}` = the single most important first task to start
 
 ### `.github/copilot-instructions.md`

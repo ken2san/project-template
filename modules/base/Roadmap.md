@@ -30,11 +30,5 @@ _Last updated: {{DATE}}_
 
 ---
 
-## Current Status
-
-Active phase: Phase {{CURRENT_PHASE}}
-
-| Phase | Name | Status |
-| ----- | ---- | ------ |
-| 1 | {{PHASE_1_NAME}} | `pending` |
-| 2 | {{PHASE_2_NAME}} | `pending` |
+> This is the static plan (phase names, goals, scope) — it isn't updated every session.
+> For current phase and what's actually done, see `HANDOFF.md`, which is.

@@ -4,17 +4,16 @@ _Last updated: {{DATE}}_
 
 > Use this file to brief a new AI session on the current project state.
 > Update before ending a session. Paste the contents as your first message.
+>
+> This file is the volatile record: what happened last, what's broken now, what's next.
+> For what this project is and why (permanent reference), see `PROJECT.md` instead —
+> never duplicate that here.
 
 ---
 
-## Project Summary
-
-{{PROJECT_NAME}} is {{PROJECT_DESCRIPTION}}.
-Stack: {{STACK}}. Live: {{LIVE_URL}}
-
 ## Current Phase
 
-Phase {{CURRENT_PHASE}} — see `Protocol.md` for full scope and open items.
+Phase {{CURRENT_PHASE}} — see `PROJECT.md`'s Roadmap for full scope and open items.
 
 ## What Was Done Last Session
 
@@ -26,8 +25,11 @@ Phase {{CURRENT_PHASE}} — see `Protocol.md` for full scope and open items.
 
 - {{CURRENT_STATE_1}}
 - {{CURRENT_STATE_2}}
+- Live: {{LIVE_URL}}
 
 ## Active Constraints
+
+_Current/situational only — permanent constraints live in `PROJECT.md` instead._
 
 - Do not implement Phase {{PHASE_MAX_PLUS_ONE}} or later without explicit instruction.
 - {{CONSTRAINT_1}}
@@ -39,5 +41,5 @@ Phase {{CURRENT_PHASE}} — see `Protocol.md` for full scope and open items.
 ## Key Files to Read First
 
 - `AGENTS.md` — agent behavior rules
-- `Protocol.md` — roadmap (phases/scope), architecture, and operating principles
+- `PROJECT.md` — purpose, direction, architecture, roadmap, constraints
 - `Decisions.md` — architectural decisions (do not reverse without instruction)

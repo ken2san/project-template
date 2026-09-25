@@ -190,7 +190,7 @@ if [[ "$1" == "apply" ]]; then
   SKIP_IF_EXISTS_FILES=(
     "modules/base/Decisions.md"
     "modules/base/HANDOFF.md"
-    "modules/base/Protocol.md"
+    "modules/base/PROJECT.md"
     "modules/base/.vscode/settings.json"
     "modules/base/.claude/settings.json"
     "modules/base/.claude/agents/skeptic.md"

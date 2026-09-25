@@ -11,7 +11,7 @@ New project bootstrap template for Copilot Agent projects.
 Shipped content lives entirely under `modules/<name>/`, each mirroring the file tree it produces
 inside a generated project (e.g. `modules/base/AGENTS.md` → `AGENTS.md`). There is no separate
 "core" tier — `base` is simply the one module every project type always includes, because a
-project generated without it (no `AGENTS.md`, no `Protocol.md`/`Decisions.md`, no
+project generated without it (no `AGENTS.md`, no `PROJECT.md`/`Decisions.md`, no
 README) wouldn't have a reason to use this template. `frontend`/`backend`/`infra`/`testing` are
 optional modules: a project type preset includes some of them by default, and "custom" mode
 (see [Supported project types](#supported-project-types)) lets you pick any combination — the
@@ -43,7 +43,7 @@ project-template/
     ├── base/                          ← Always included, every project type
     │   ├── AGENTS.md
     │   ├── CLAUDE.md                  ← `@AGENTS.md` import, so Claude Code picks up AGENTS.md too
-    │   ├── Protocol.md                 ← Roadmap (phases/scope), architecture, operating principles
+    │   ├── PROJECT.md                  ← Purpose, direction, architecture, roadmap, constraints
     │   ├── Decisions.md
     │   ├── HANDOFF.md
     │   ├── README.md                  ← Becomes the new project's README.md
@@ -144,7 +144,7 @@ ptpl uninstall
 
 Removes the `ptpl` symlink. Refuses to run if the path isn't a symlink, so it never deletes an unrelated file.
 
-Prompts for project folder name, name, description, stack, project type, and dev/test/build commands — in that order, so the stack is already known by the time you're picking a project type instead of the other way around. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `Protocol.md`'s Roadmap section has actual phases, so Step 2 (AI content generation) fills it in once those are written.
+Prompts for project folder name, name, description, stack, project type, and dev/test/build commands — in that order, so the stack is already known by the time you're picking a project type instead of the other way around. All prompts have defaults — press Enter to accept. Copies template, replaces basic placeholders, runs `git init`. The phase-boundary placeholder (`{{PHASE_MAX_PLUS_ONE}}`) isn't asked here — it can't mean anything until `PROJECT.md`'s Roadmap section has actual phases, so Step 2 (AI content generation) fills it in once those are written.
 
 ### Step 2 — AI content generation (Copilot Agent)
 
@@ -156,7 +156,7 @@ Open the new project in VS Code, paste the clipboard content into Copilot Chat, 
 > Copilot: Run Prompt > init
 ```
 
-The agent reads your project context, asks 2–3 targeted questions, then writes real content into `Protocol.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
+The agent reads your project context, asks 2–3 targeted questions, then writes real content into `PROJECT.md`, `Decisions.md`, `HANDOFF.md`, and all agent files. No `{{PLACEHOLDER}}` tokens remain after this step.
 
 > The prompt file is at `.github/prompts/init.prompt.md`.
 
@@ -240,12 +240,15 @@ automatically as modules are added — no script changes needed.
 | `{{CURRENT_STATE_2}}`        | Second current-state checkpoint for handoff context.        |
 | `{{CONSTRAINT_1}}`           | Additional project-specific delivery constraint.            |
 | `{{NEXT_TASK}}`              | Highest-priority next action for the incoming session.      |
-| `{{PROTOCOL_OVERVIEW}}`      | Overview paragraph describing project operating rules.      |
-| `{{PRINCIPLE_1}}`            | First guiding principle in the protocol file.               |
-| `{{PRINCIPLE_2}}`            | Second guiding principle in the protocol file.              |
-| `{{PRINCIPLE_3}}`            | Third guiding principle in the protocol file.               |
+| `{{PROJECT_PURPOSE}}`        | Overview paragraph describing what the project is and why.  |
+| `{{CURRENT_DIRECTION}}`      | The strategic bet — target user, priorities, why this approach. |
+| `{{PRINCIPLE_1}}`            | First guiding architecture principle in `PROJECT.md`.       |
+| `{{PRINCIPLE_2}}`            | Second guiding architecture principle in `PROJECT.md`.      |
+| `{{PRINCIPLE_3}}`            | Third guiding architecture principle in `PROJECT.md`.       |
 | `{{DATA_MODEL_DESCRIPTION}}` | Summary of the project data model or state shape.           |
 | `{{WORKFLOW_DESCRIPTION}}`   | Summary of the core project workflow.                       |
+| `{{PROJECT_CONSTRAINT_1}}`   | First permanent/structural constraint in `PROJECT.md`.      |
+| `{{PROJECT_CONSTRAINT_2}}`   | Second permanent/structural constraint in `PROJECT.md`.     |
 | `{{DECISION_SUMMARY}}`       | One-line architecture decision statement.                   |
 | `{{DECISION_CONTEXT}}`       | Context that motivated the architecture decision.           |
 | `{{ALTERNATIVE_1}}`          | First alternative considered during decision-making.        |

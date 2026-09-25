@@ -25,6 +25,6 @@ Then open {{DEV_URL}}.
 ## Project Docs
 
 - `AGENTS.md` — AI agent behavior rules
-- `Protocol.md` — roadmap (phases/scope), operating principles, and architecture
+- `PROJECT.md` — purpose, direction, architecture, roadmap, and constraints
 - `Decisions.md` — architecture decisions (do not reverse without instruction)
 - `HANDOFF.md` — AI session handoff notes

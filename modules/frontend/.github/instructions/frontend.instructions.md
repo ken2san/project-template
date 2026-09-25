@@ -14,7 +14,7 @@ See `copilot-instructions.md` for stack, entry point, and state details.
 
 ## Rules
 
-- Read `Protocol.md` before any feature work — respect phase boundaries.
+- Read `PROJECT.md` before any feature work — respect phase boundaries.
 - {{MODAL_RULE}}
 - {{DIRECTORY_RULE}}
 - Prefer utility classes; avoid inline styles.

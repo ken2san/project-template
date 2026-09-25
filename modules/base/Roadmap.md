@@ -32,3 +32,7 @@ _Last updated: {{DATE}}_
 
 > This is the static plan (phase names, goals, scope) — it isn't updated every session.
 > For current phase and what's actually done, see `HANDOFF.md`, which is.
+>
+> If the actual plan changed since this was written, don't leave the old phases sitting
+> next to a contradicting new direction. Rewrite the affected phase(s) fully, or mark
+> `> ⚠️ STALE as of {{DATE}}: <what changed>` at the top.

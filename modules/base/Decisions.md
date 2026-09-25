@@ -5,6 +5,9 @@ _Last updated: {{DATE}}_
 > This file records significant design decisions and the reasoning behind them.
 > AI agents must read this before proposing changes to established patterns.
 > Do not reverse a decision without explicit user instruction.
+> When a later decision reverses or replaces an earlier one, mark the earlier entry
+> `**Status: Superseded by the {{DATE}} decision above**` — never leave two entries
+> silently contradicting each other.
 
 ---
 

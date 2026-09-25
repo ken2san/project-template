@@ -147,26 +147,44 @@ if [[ "$1" == "apply" ]]; then
   # "core" tier — `base` is just the one module every preset always includes.
   # dest_rel_path() strips the "modules/<name>/" prefix to get that dest path.
   #
-  # Two categories of files exist for `apply`:
+  # Two categories of files exist for `apply`. The dividing line is not
+  # "does it currently have project-specific content" — it's "could a
+  # project legitimately want to customize this file." FORCE_FILES gets
+  # silently clobbered on every apply, so it must be reserved for files the
+  # template owns outright, where a project is never expected to edit them
+  # directly (AGENTS.md/global.instructions.md both say so in their own
+  # header, with global.custom.instructions.md as the sanctioned place for
+  # project-specific additions instead). Anything a project could plausibly
+  # customize — instructions, agents, hooks, not just docs that accumulate
+  # prose — goes in SKIP_IF_EXISTS, even at the cost of template fixes not
+  # auto-propagating to existing projects; a diff shown to an AI session
+  # covers that case when it actually matters. skeptic.md and
+  # pre-commit-verify.sh were originally FORCE_FILES on the reasoning that
+  # nobody would want to customize a reviewer persona or a verification
+  # script — wrong, by the same logic .vscode/settings.json was once
+  # force-overwritten and destroyed real project settings before that got
+  # fixed too (see CHANGELOG). Don't repeat that mistake for a new file
+  # without a specific, checked reason it doesn't apply.
   #
   #   FORCE_FILES        — overwritten on every `apply` run.
-  #                        Use for pure-template content with no project-specific data.
-  #                        Template improvements are automatically propagated.
+  #                        Only for files the template owns outright; a project
+  #                        is never expected to edit them (see note above).
   #
   #   SKIP_IF_EXISTS     — copied only if absent; never overwritten.
-  #                        Use for files that accumulate project-specific content.
-  #                        Once present in the workspace, they are owned by the project.
+  #                        Everything a project could plausibly customize,
+  #                        docs and instructions/agents/hooks alike. Once
+  #                        present in the workspace, they are owned by the
+  #                        project.
   #
-  # Files always overwritten (pure template rules, no project-specific content)
+  # Files always overwritten (template-owned, not meant to be project-edited)
   FORCE_FILES=(
     "modules/base/AGENTS.md"
     "modules/base/CLAUDE.md"
     "modules/base/.github/instructions/global.instructions.md"
-    "modules/base/.claude/agents/skeptic.md"
-    "modules/base/.claude/hooks/pre-commit-verify.sh"
   )
 
-  # Files copied only if not present (contain project-specific or placeholder content).
+  # Files copied only if not present (project-owned once created, including
+  # anything a project could plausibly customize — see note above).
   # `apply` doesn't prompt for a project type, so it includes every module —
   # unlike `new`, an existing project's stack isn't being chosen here, only augmented.
   SKIP_IF_EXISTS_FILES=(
@@ -175,6 +193,8 @@ if [[ "$1" == "apply" ]]; then
     "modules/base/Protocol.md"
     "modules/base/.vscode/settings.json"
     "modules/base/.claude/settings.json"
+    "modules/base/.claude/agents/skeptic.md"
+    "modules/base/.claude/hooks/pre-commit-verify.sh"
     "modules/base/.github/copilot-instructions.md"
     "modules/base/.github/instructions/global.custom.instructions.md"
     "modules/base/.github/prompts/init.prompt.md"

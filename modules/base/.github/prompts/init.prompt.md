@@ -76,6 +76,13 @@ Do not ask for information that is already in the files. Keep this to 2–3 targ
   Roadmap section is the static plan and is never updated with live status, so keep this field
   (not PROJECT.md) current every session
 - `{{NEXT_TASK}}` = the single most important first task to start
+- Current Position (for a brand-new project, nothing has happened yet — write that plainly,
+  don't invent activity): `{{ACTIVE_OWNER}}`/`{{ACTIVE_SCOPE}}` = `none` (nobody has claimed any
+  scope yet); `{{LAST_VERIFIED}}`/`{{LAST_VERIFIED_COMMIT}}` = today's date and the initial
+  commit; `{{APPROVED_SCOPE}}` = whatever Phase 1's first task actually is; `{{FORBIDDEN_SCOPE}}`
+  = "Phase `{{PHASE_MAX_PLUS_ONE}}` or later" (same boundary as elsewhere); `{{NEXT_VERIFICATION}}`
+  = how to confirm `{{NEXT_TASK}}` actually succeeded; `{{UNCERTAINTY}}` = `none identified yet`
+  if genuinely none, not a placeholder left unfilled
 
 ### `.github/copilot-instructions.md`
 - Fill in `{{CODE_RULE_*}}` with 3 project-specific rules (not generic)

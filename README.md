@@ -233,6 +233,14 @@ automatically as modules are added — no script changes needed.
 | `{{PHASE_2_SCOPE_2}}`        | Second scoped item for phase 2.                             |
 | `{{CURRENT_PHASE}}`          | Current active phase indicator used in status docs.         |
 | `{{LIVE_URL}}`               | Current live deployment URL or deployment status note.      |
+| `{{ACTIVE_OWNER}}`           | Who/what currently owns the active scope, for recovery.     |
+| `{{ACTIVE_SCOPE}}`           | What that owner is currently working on.                    |
+| `{{LAST_VERIFIED}}`          | When Current Position was last checked against reality.     |
+| `{{LAST_VERIFIED_COMMIT}}`   | The commit Current Position was last verified against.      |
+| `{{APPROVED_SCOPE}}`         | What's explicitly approved to act on right now.             |
+| `{{FORBIDDEN_SCOPE}}`        | What's explicitly off-limits right now.                     |
+| `{{NEXT_VERIFICATION}}`      | How to confirm the next action actually succeeded.          |
+| `{{UNCERTAINTY}}`            | Known unknowns a recovering agent should not assume away.   |
 | `{{LAST_SESSION_1}}`         | First key outcome from the previous working session.        |
 | `{{LAST_SESSION_2}}`         | Second key outcome from the previous working session.       |
 | `{{LAST_SESSION_3}}`         | Third key outcome from the previous working session.        |

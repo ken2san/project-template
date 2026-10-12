@@ -65,6 +65,15 @@ For each file containing `{{...}}`:
 - `{{CURRENT_STATE_*}}` — factual description of what is working now
 - `{{CONSTRAINT_*}}` — any active constraints not already listed
 - `{{NEXT_TASK}}` — the single most important next action
+- Current Position — do not guess any of these from thin air; base them only on what `git
+  status`/`git log` and the rest of this file actually show:
+  - `{{ACTIVE_OWNER}}`/`{{ACTIVE_SCOPE}}` — who/what last worked on this and on what, or `none`
+    if there's no evidence of an active owner
+  - `{{LAST_VERIFIED}}`/`{{LAST_VERIFIED_COMMIT}}` — today's date and the current `HEAD` commit
+  - `{{APPROVED_SCOPE}}`/`{{FORBIDDEN_SCOPE}}` — carry forward from existing constraints in this
+    file if any exist, else `none recorded yet`
+  - `{{NEXT_VERIFICATION}}` — how to confirm `{{NEXT_TASK}}` succeeded
+  - `{{UNCERTAINTY}}` — `none identified yet` only if genuinely true, not a default
 
 ### `.github/copilot-instructions.md` (only if freshly copied — has `{{PHASE_MAX_PLUS_ONE}}`)
 - `{{PHASE_MAX_PLUS_ONE}}` — the number of the current/next phase not yet started, based on

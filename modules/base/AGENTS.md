@@ -7,6 +7,45 @@
 - **Stay in scope:** Only touch files directly related to the current task. Do not refactor unrelated code.
 - **No masking:** Never suppress errors, skip tests, or modify assertions to force a green result.
 - **Escalate clearly:** When blocked, report the exact error, what was tried, and what human decision is needed.
+- **Recover before you act:** After any context loss, complete the read-only recovery pass below before writing anything. Never widen a past approval.
+
+---
+
+## Context Loss Recovery / Handoff
+
+Context is lost routinely — a new session, `/clear`, automatic compaction, a swap between agents.
+The risk is not an imperfect handoff; it is an agent that fills the gap with assumptions and
+irreversibly damages a running system. So a recovering agent starts read-only and earns the right
+to write.
+
+### Entering a session without reliable context — read-only first
+
+1. Read `HANDOFF.md`, then `PROJECT.md` and `Decisions.md`.
+2. Reconcile them against the real state before trusting them: `git status --short`,
+   `git log --oneline -10`, and the current branch.
+3. Check whether another agent is already working on this before starting — if your environment
+   gives you a way to see concurrently-running agents or sessions, use it.
+4. Where the project has live infrastructure (deploys, databases, brokerage accounts), confirm
+   against it using read-only queries only.
+5. **The real state wins.** Where `HANDOFF.md` and the repository disagree, the repository is
+   right and `HANDOFF.md` is stale: correct the file, do not act on its claim.
+
+### Stop, and escalate to the human, when
+
+- `HANDOFF.md` is missing or stale, or contradicts the repository and you cannot tell which is right.
+- The approval scope for the next action is unclear, or you cannot tell whether it already ran.
+- Another agent appears to hold the same work.
+
+Stopping read-only is the correct outcome here, not a failure. Do not guess to keep moving.
+
+### Rules that hold regardless
+
+- **Never widen an approval.** It covers the action it was given for, once — not a similar action,
+  not a retry with different parameters, not the next step.
+- **Never repeat an action that may already have run.** Prove it by its recorded effect (a commit,
+  a migration row, a log line) before re-running anything that is not idempotent.
+- **Before a reset you can see coming** (`/clear`, or imminent auto-compaction): update
+  `HANDOFF.md` first, then reset.
 
 ---
 

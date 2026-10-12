@@ -11,6 +11,20 @@ _Last updated: {{DATE}}_
 
 ---
 
+## Current Position
+
+_A recovering agent reads this first and verifies every line against the repository before acting
+on it — see `AGENTS.md` > Context Loss Recovery / Handoff. Write `none`/`unknown` rather than
+leaving a guess._
+
+- **Active owner / scope**: {{ACTIVE_OWNER}} — {{ACTIVE_SCOPE}}
+- **Last verified**: {{LAST_VERIFIED}} at commit {{LAST_VERIFIED_COMMIT}}
+- **Approved**: {{APPROVED_SCOPE}}
+- **Explicitly forbidden**: {{FORBIDDEN_SCOPE}}
+- **Next action**: see Next Priority below
+- **How to confirm it is done**: {{NEXT_VERIFICATION}}
+- **Known uncertainty**: {{UNCERTAINTY}}
+
 ## Current Phase
 
 Phase {{CURRENT_PHASE}} — see `PROJECT.md`'s Roadmap for full scope and open items.

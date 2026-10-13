@@ -45,6 +45,11 @@ Phase {{CURRENT_PHASE}} — see `PROJECT.md`'s Roadmap for full scope and open i
 
 _Current/situational only — permanent constraints live in `PROJECT.md` instead._
 
+_A blocker is written with its scope, never as a bare impossibility: which operation is
+blocked, which subjects it applies to, how a reader tests one subject for themselves, and
+which operations it does **not** cover. "X does not work" that silently meant "X does not
+work via Y" is how an agent comes to report a working path as impossible._
+
 - Do not implement Phase {{PHASE_MAX_PLUS_ONE}} or later without explicit instruction.
 - {{CONSTRAINT_1}}
 
